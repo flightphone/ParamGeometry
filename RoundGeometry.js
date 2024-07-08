@@ -21,7 +21,7 @@ const makeGeometry = (
         p.y = p.y / scale;
         points.push(p);
     }
-
+    console.log(points);
     let geometry = new RoundGeometry(points, (size - 2 * radius) / scale, radius / scale, segments);
     return geometry;
 }

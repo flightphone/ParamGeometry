@@ -6,24 +6,28 @@ import { RoundGeometry, makeGeometry } from './RoundGeometry';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-
+let scale = 5;
 
 const models = [
-    { toString: () => "torus", mode: "curve", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 200, rseg: 40, repeat: 2 },
-    { toString: () => "liss", mode: "curve", curve: liss, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 50 },
+    { toString: () => "torus", mode: "curve", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 1.2, tseg: 200, rseg: 40, repeat: 2 },
     { toString: () => "trefoil", mode: "curve", curve: trefoil, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6 },
-    { toString: () => "tennis", mode: "curve", curve: tennis, tmin: 0, tmax: 2 * Math.PI, radius: 0.8, tseg: 200, rseg: 40, repeat: 6 },
+    { toString: () => "torus knot", mode: "curve", curve: solenoid, tmin: 0, tmax: 4 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6, axis: 2 },
+    { toString: () => "tennis", mode: "curve", curve: tennis, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 200, rseg: 40, repeat: 6 },
+    { toString: () => "liss", mode: "curve", curve: liss, tmin: 0, tmax: 10 * Math.PI, radius: 0.3, tseg: 1000, rseg: 40, repeat: 50 },
+    { toString: () => "liss2", mode: "curve", curve: liss2, tmin: 0, tmax: 4 * Math.PI, radius: 0.4, tseg: 500, rseg: 40, repeat: 12 },
+    { toString: () => "rose", mode: "curve", curve: rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 50 },
     { toString: () => "sine", mode: "surf", surf: sine, umin: 0, umax: 2 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 1 },
-    { toString: () => "klein", mode: "surf", surf:klein, umin: 2 * Math.PI, umax: 0, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 2 },
+    { toString: () => "klein", mode: "surf", surf: klein, umin: 2 * Math.PI, umax: 0, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 2 },
     { toString: () => "shell", mode: "surf", surf: shell, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 8 },
     {
-        toString: () => "round box", mode: "round",
+        toString: () => "round polygon", mode: "round",
         boxparams: {
             vertices: {
+                
                 1: {
                     id: 1,
-                    x: -450,
-                    y: -150,
+                    x: -450*scale,
+                    y: -150*scale,
                     upper_edge_rounded: false,
                     lower_edge_rounded: false,
                     next: 2,
@@ -31,8 +35,8 @@ const models = [
                 },
                 2: {
                     id: 2,
-                    x: -450,
-                    y: 150,
+                    x: -450*scale,
+                    y: 150*scale,
                     upper_edge_rounded: true,
                     lower_edge_rounded: false,
                     next: 3,
@@ -40,8 +44,8 @@ const models = [
                 },
                 3: {
                     id: 3,
-                    x: 450,
-                    y: 150,
+                    x: 0*scale,
+                    y: 350*scale,
                     upper_edge_rounded: false,
                     lower_edge_rounded: true,
                     next: 4,
@@ -49,17 +53,37 @@ const models = [
                 },
                 4: {
                     id: 4,
-                    x: 450,
-                    y: -150,
+                    x: 450*scale,
+                    y: 150*scale,
+                    upper_edge_rounded: true,
+                    lower_edge_rounded: true,
+                    next: 4,
+                    prev: 2
+                },
+                
+                5: {
+                    id: 5,
+                    x: 450*scale,
+                    y: -150*scale,
                     upper_edge_rounded: true,
                     lower_edge_rounded: true,
                     next: 1,
                     prev: 3
-                }
+                },
+                6: {
+                    id: 6,
+                    x: 0*scale,
+                    y: 0*scale,
+                    upper_edge_rounded: false,
+                    lower_edge_rounded: true,
+                    next: 4,
+                    prev: 2
+                },
+                
             },
-            radius: 30,
+            radius: 30*scale,
             segments: 10,
-            size: 100
+            size: 100*scale
         }
     }
 ]
@@ -69,7 +93,7 @@ const models = [
 
 
 const params = {
-    model: models[0],
+    model: models[5],
     wireframe: false,
     update: CreatePanel,
     exportASCII: exportASCII,
@@ -114,18 +138,27 @@ camera.lookAt(0, 0, 0);
 
 let exporter = new OBJExporter();
 
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 5);
-hemiLight.position.set(0, 20, 0);
-scene.add(hemiLight);
+{
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 2);
+    hemiLight.position.set(0, 20, 0);
+    scene.add(hemiLight);
+}
 
 {
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 15);
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
+    hemiLight.position.set(0, -20, 0);
+    scene.add(hemiLight);
+}
+
+
+{
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(0, 0, 20);
     scene.add(directionalLight);
 }
 
 {
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 15);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
     directionalLight.position.set(0, 0, -20);
     scene.add(directionalLight);
 }
@@ -136,8 +169,10 @@ texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
 
 
-const materialRound = new THREE.MeshLambertMaterial({
-    color: new THREE.Color(0x5F5F5F),
+const materialRound = new THREE.MeshStandardMaterial({ //new THREE.MeshLambertMaterial({
+    roughness:0.1,
+    //metalness:0.5,
+
     side: THREE.DoubleSide,
     map: texture
 });
@@ -172,11 +207,15 @@ function CreatePanel() {
 
     let geom = null;
     let par = params.model;
-    if (par.mode == "curve")
-        geom = new CurveGeometry(par.curve, par.tmin, par.tmax, par.radius, par.tseg, par.rseg, par.repeat);
+    if (par.mode == "curve") {
+        let mode = 0;
+        if (par.axis)
+            mode = 2;
+        geom = new CurveGeometry(par.curve, par.tmin, par.tmax, par.radius, par.tseg, par.rseg, par.repeat, mode);
+    }
     if (par.mode == "surf")
         geom = new SurfGeometry(par.surf, par.umin, par.umax, par.vmin, par.vmax, par.useg, par.vseg, par.repeat);
-    if (par.mode == "round")    
+    if (par.mode == "round")
         geom = makeGeometry(par.boxparams);
 
     //const geom = new CurveGeometry(circ, 0, 2*Math.PI, 0.4, 200, 20);
@@ -233,11 +272,11 @@ function sine(u, v) {
 }
 
 function tennis(t) {
-    let a = 3., b = 1., c = 2. * Math.sqrt(a * b), x = a * Math.cos(t) + b * Math.cos(3. * t), y = a * Math.sin(t) - b * Math.sin(3. * t), z = c * Math.sin(2. * t);
+    let a = 2., b = 1., c = 2. * Math.sqrt(a * b), x = a * Math.cos(t) + b * Math.cos(3. * t), y = a * Math.sin(t) - b * Math.sin(3. * t), z = c * Math.sin(2. * t);
     return new THREE.Vector3(x, y, z);
 }
 function circ(t) {
-    let a = 1;
+    let a = 3;
     return new THREE.Vector3(Math.cos(t) * a, Math.sin(t) * a, 0);
 }
 
@@ -246,33 +285,50 @@ function trefoil(t) {
     return new THREE.Vector3(Math.sin(t) + 2. * Math.sin(2. * t), Math.cos(t) - 2. * Math.cos(2. * t), -1 * Math.sin(3. * t));
 }
 
+function solenoid(t) {
+    let n = 1.5, R = 2., r = 1.;
+    return new THREE.Vector3((R + r * Math.cos(n * t)) * Math.cos(t), (R + r * Math.cos(n * t)) * Math.sin(t), r * Math.sin(n * t));
+}
+
 function liss(t) {
     let a = 3., b = 3., c = 2.5, n = 1.2, m = 2., f = Math.PI / 2., e = .0;
     return new THREE.Vector3(a * Math.sin(t), b * Math.sin(n * t + f), c * Math.sin(m * t + e));
 }
 
-function klein(u, v)
+function liss2(t) {
+    let a = 3., b = 3., c = 1.5, n = 1.5, m = 2.5, f = Math.PI/2., e = .0;
+    return new THREE.Vector3(a * Math.sin(t), b * Math.sin(n * t + f), c * Math.sin(m * t + e));
+}
+
+
+function rose(t)
 {
-    
+    let a = 3.,
+    n = 2.2,
+    b = 0.,
+    r = a*Math.cos(n*t);
+    return new THREE.Vector3(r*Math.cos(t), r*Math.sin(t), b*Math.cos(n*t)*Math.cos(n*t));
+}
+
+function klein(u, v) {
+
     let a = 3., b = 4., c = 2., r, x, y, z;
-    if (u < Math.PI)
-    {
-        r = c*(1. - Math.cos(u)/2.);
-        x = Math.cos(u)*(a*(1.+Math.sin(u)) + r*Math.cos(v));
-        y = Math.sin(u)*(b + r*Math.cos(v));
-        z = r*Math.sin(v);
+    if (u < Math.PI) {
+        r = c * (1. - Math.cos(u) / 2.);
+        x = Math.cos(u) * (a * (1. + Math.sin(u)) + r * Math.cos(v));
+        y = Math.sin(u) * (b + r * Math.cos(v));
+        z = r * Math.sin(v);
     }
-    
-    else
-    {
-        r = c*(1. - Math.cos(u)/2.);
-        x = Math.cos(u)*a*(1.+Math.sin(u)) - r*Math.cos(v);
-        y = Math.sin(u)*b;
-        z = r*Math.sin(v);
+
+    else {
+        r = c * (1. - Math.cos(u) / 2.);
+        x = Math.cos(u) * a * (1. + Math.sin(u)) - r * Math.cos(v);
+        y = Math.sin(u) * b;
+        z = r * Math.sin(v);
     }
-    
-    return new  THREE.Vector3(x, y, z);
-    
+
+    return new THREE.Vector3(x, y, z);
+
 
 }
 
