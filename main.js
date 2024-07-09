@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CurveGeometry } from './CurveGeometry';
+import { CurveHeightGeometry } from './CurveHeightGeometry';
+import { CurveCloseGeometry } from './CurveCloseGeometry';
 import { SurfGeometry } from './SurfGeometry'
 import { RoundGeometry, makeGeometry } from './RoundGeometry';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
@@ -9,13 +11,18 @@ import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 let scale = 5;
 
 const models = [
-    { toString: () => "torus", mode: "curve", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 1.2, tseg: 200, rseg: 40, repeat: 2 },
+    { toString: () => "torus", mode: "curve", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 1., tseg: 100, rseg: 100, repeat: 2 },
+    { toString: () => "torus2", mode: "curveheight", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 100, rseg: 100, repeat: 8, height: 2 },
+    { toString: () => "torus3", mode: "curveclose", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 100, rseg: 100, repeat: 8, height: 2 },
     { toString: () => "trefoil", mode: "curve", curve: trefoil, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6 },
     { toString: () => "torus knot", mode: "curve", curve: solenoid, tmin: 0, tmax: 4 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6, axis: 2 },
     { toString: () => "tennis", mode: "curve", curve: tennis, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 200, rseg: 40, repeat: 6 },
     { toString: () => "liss", mode: "curve", curve: liss, tmin: 0, tmax: 10 * Math.PI, radius: 0.3, tseg: 1000, rseg: 40, repeat: 50 },
     { toString: () => "liss2", mode: "curve", curve: liss2, tmin: 0, tmax: 4 * Math.PI, radius: 0.4, tseg: 500, rseg: 40, repeat: 12 },
     { toString: () => "rose", mode: "curve", curve: rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 50 },
+    { toString: () => "rose2", mode: "curveheight", curve: rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 100, height:2 },
+    { toString: () => "rose3", mode: "curveclose", curve: rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 100, height:2 },
+    { toString: () => "quart", mode: "curveclose", curve:quart, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 1000, rseg: 40, repeat: 2, axis:2 },
     { toString: () => "sine", mode: "surf", surf: sine, umin: 0, umax: 2 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 1 },
     { toString: () => "klein", mode: "surf", surf: klein, umin: 2 * Math.PI, umax: 0, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 2 },
     { toString: () => "shell", mode: "surf", surf: shell, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 8 },
@@ -88,12 +95,25 @@ const models = [
     }
 ]
 
+const loader = new THREE.TextureLoader();
+const texture = loader.load("img/texture.png");
+texture.wrapS = THREE.RepeatWrapping;
+texture.wrapT = THREE.RepeatWrapping;
+
+const materialRound = new THREE.MeshStandardMaterial({ //new THREE.MeshLambertMaterial({
+    roughness:0.1,
+    //metalness:0.5,
+    side: THREE.DoubleSide,
+    map: texture
+});
+
+
 
 
 
 
 const params = {
-    model: models[5],
+    model: models[3],
     wireframe: false,
     update: CreatePanel,
     exportASCII: exportASCII,
@@ -163,19 +183,8 @@ let exporter = new OBJExporter();
     scene.add(directionalLight);
 }
 
-const loader = new THREE.TextureLoader();
-const texture = loader.load("img/texture.png");
-texture.wrapS = THREE.RepeatWrapping;
-texture.wrapT = THREE.RepeatWrapping;
 
 
-const materialRound = new THREE.MeshStandardMaterial({ //new THREE.MeshLambertMaterial({
-    roughness:0.1,
-    //metalness:0.5,
-
-    side: THREE.DoubleSide,
-    map: texture
-});
 
 const materialWire = new THREE.MeshStandardMaterial({
     color: new THREE.Color(0x000000),
@@ -207,25 +216,29 @@ function CreatePanel() {
 
     let geom = null;
     let par = params.model;
+    
     if (par.mode == "curve") {
         let mode = 0;
         if (par.axis)
             mode = 2;
         geom = new CurveGeometry(par.curve, par.tmin, par.tmax, par.radius, par.tseg, par.rseg, par.repeat, mode);
     }
+    if (par.mode == "curveheight") {
+        geom = new CurveHeightGeometry(par.curve, par.tmin, par.tmax, par.radius, par.tseg, par.rseg, par.repeat, par.height);
+    }
+
+    if (par.mode == "curveclose") {
+        geom = new CurveCloseGeometry(par.curve, par.tmin, par.tmax, par.radius, par.tseg, par.rseg, par.repeat, par.height);
+    }
+
+    
+
     if (par.mode == "surf")
         geom = new SurfGeometry(par.surf, par.umin, par.umax, par.vmin, par.vmax, par.useg, par.vseg, par.repeat);
     if (par.mode == "round")
         geom = makeGeometry(par.boxparams);
 
-    //const geom = new CurveGeometry(circ, 0, 2*Math.PI, 0.4, 200, 20);
-    //const geom = new CurveGeometry(tennis, 0, 2*Math.PI, 0.8, 200, 80, 6);
-    //const geom = new CurveGeometry(liss, 0, 10*Math.PI, 0.4, 1000, 100, 50);
-    //const geom = new CurveGeometry(trefoil, 0, 2*Math.PI, 0.4, 200, 20, 6);
-
-    //const geom = new SurfGeometry(sine, 0, 2*Math.PI, 0, 2* Math.PI, 100, 100);
-    //const geom = new SurfGeometry(shell, 0, 14*Math.PI, 0, 2* Math.PI, 1000, 100, 8);
-
+    
     if (me)
         scene.remove(me);
     if (me2)
@@ -276,7 +289,7 @@ function tennis(t) {
     return new THREE.Vector3(x, y, z);
 }
 function circ(t) {
-    let a = 3;
+    let a = 2;
     return new THREE.Vector3(Math.cos(t) * a, Math.sin(t) * a, 0);
 }
 
@@ -303,7 +316,7 @@ function liss2(t) {
 
 function rose(t)
 {
-    let a = 3.,
+    let a = 4.,
     n = 2.2,
     b = 0.,
     r = a*Math.cos(n*t);
@@ -332,6 +345,20 @@ function klein(u, v) {
 
 }
 
+function quart(t)
+{
+    let r = 2., n  = 4., dn = Math.PI*2/n, c = t/dn, a0 = Math.floor(c)*dn, 
+    a1 = a0 + dn, d = c - Math.floor(c);
+    let v1 = new THREE.Vector3(Math.cos(a0), Math.sin(a0), 0);
+    let v2 = new THREE.Vector3(Math.cos(a1), Math.sin(a1), 0);
+    v2.sub(v1);
+    v2.multiplyScalar(d);
+    let res = new THREE.Vector3(0, 0, 0);
+    res.addVectors(v1, v2);
+    res.multiplyScalar(r);
+    //vec3 res = r*(v1 + (v2-v1)*d);
+    return res;
+}
 function exportASCII() {
 
     const result = exporter.parse(me);

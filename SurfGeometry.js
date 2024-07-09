@@ -1,17 +1,6 @@
 import { BufferGeometry, Float32BufferAttribute, Vector3 } from "three";
 
-function surf_normal(surf, u, v)
-{
-    let h = 0.01;
-    let du = surf(u+h, v);
-    du.sub(surf(u-h, v));
-    let dv = surf(u, v+h);
-    dv.sub(surf(u, v-h));
-    let res = new Vector3(0, 0, 0);
-    res.crossVectors(du, dv);
-    res.normalize()
-    return  res;
-}
+import { NormalUtils } from "./NormalUtils";
 
 class SurfGeometry extends BufferGeometry {
 
@@ -57,7 +46,7 @@ class SurfGeometry extends BufferGeometry {
                 let v = vmin + (vmax - vmin) * j / (vseg - 1);
 
                 let val = surf(u, v);
-                let nor = surf_normal(surf, u, v);
+                let nor = NormalUtils.surf_normal(surf, u, v);
 
                 normals.push(nor.x, nor.y, nor.z);
                 vertices.push(val.x, val.y, val.z);
