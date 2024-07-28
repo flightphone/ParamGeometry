@@ -4,7 +4,7 @@ import { NormalUtils } from "./NormalUtils";
 
 class SurfGeometry extends BufferGeometry {
 
-    constructor(surf = (t) => { }, umin = 0, umax = 1, vmin = 0, vmax = 1, useg = 100, vseg = 100, repeat = 1) {
+    constructor(surf = (u, v) => { }, umin = 0, umax = 1, vmin = 0, vmax = 1, useg = 100, vseg = 100, repeat = 1) {
 
         super();
         this.type = 'SurfGeometry';
