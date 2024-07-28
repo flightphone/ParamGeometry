@@ -7,7 +7,6 @@ import { CurveCloseGeometry } from './CurveCloseGeometry';
 import { SurfGeometry } from './SurfGeometry'
 import { makeGeometry } from './RoundGeometry';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
-//import { FunctionGeometry } from './FunctionGeometry';
 import { ImplicitGeometry } from './ImplicitGeometry';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
@@ -20,13 +19,15 @@ let hypotr = 3;
 
 const models = [
     //{ toString: () => "shpere", mode: "implicit", func: sphere, xmin: -2, xmax: 2, ymin: -2, ymax:2, zmin: -2, zmax:2, nseg:100},
+    { toString: () => "holed3", mode: "implicit", func: holed3, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
+    { toString: () => "holed2", mode: "implicit", func: holed2, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
     { toString: () => "isf", mode: "implicit", func: isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "rcube", mode: "implicit", func: rcube, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
-    { toString: () => "gayley", mode: "implicit", func: gayley, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
     { toString: () => "goursat", mode: "implicit", func: goursat, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
     { toString: () => "riemann", mode: "implicit", func: riemann, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
-    { toString: () => "cassini", mode: "implicit", func: cassini, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -2, zmax: 2, nseg: 100 },
+    { toString: () => "gayley", mode: "implicit", func: gayley, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
     { toString: () => "clebsch", mode: "implicit", func: clebsch, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
+    { toString: () => "cassini", mode: "implicit", func: cassini, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "gyroide", mode: "implicit", func: gyroide, xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
 
 
@@ -553,6 +554,21 @@ function gyroide(x, y, z) {
     return Math.cos(x) * Math.sin(y) + Math.cos(y) * Math.sin(z) + Math.cos(z) * Math.sin(x);
 }
 //https://mathcurve.com/surfaces.gb/Gyroide/gyroide.shtml
+
+
+function holed2(x, y, z)
+{
+    let x2 = x*x, y2 = y*y, z2 = z*z;
+    let u = (x2)*(1-x2) - y2;
+    return u*u + z2 - 0.01;
+}
+
+function holed3(x, y, z)
+{
+    let x2 = x*x, y2 = y*y, z2 = z*z;
+    let u = (x2 + y2)*(x2 + y2) - x *(x2 - 3*y2);
+    return u*u + z2 - 0.008;
+}
 function exportASCII() {
 
     const result = exporter.parse(me);
@@ -607,3 +623,6 @@ function saveArrayBuffer(buffer, filename) {
 //https://github.com/Domenicobrz/Dual-Contouring-javascript-implementation/blob/master/README.md
 
 //Погорелов 89
+
+//https://mathcurve.com/surfaces.gb/tore/tn.shtml
+//https://mathcurve.com/courbes2d/gerono/gerono.shtml
