@@ -54,47 +54,52 @@ class ImplicitGeometry extends BufferGeometry {
                         let x2 = x + xh / 2, y2 = y + yh / 2, z2 = z + zh / 2;
                         let po = NormalUtils.surfacepoint(fun, x2, y2, z2);
                         let nor = NormalUtils.implicit_norm(fun, po.x, po.y, po.z);
-                        vertices.push(po.x, po.y, po.z);
-                        normals.push(nor.x, nor.y, nor.z);
-                        nors.push(nor);
-                        verts.push(po);
-                        
+                        if (po.x >= xmin && po.x <= xmax && po.y >= ymin && po.y <= ymax && po.z >= zmin && po.z <= zmax) {
+                            vertices.push(po.x, po.y, po.z);
+                            normals.push(nor.x, nor.y, nor.z);
+                            nors.push(nor);
+                            verts.push(po);
+                        }
+
                     }
 
                 }
 
         //
 
-        
-        //triangulation
-        nvert = verts.length; 
-             
-        for (let a = 0; a < verts.length; a++) {
-                let nor = nors[a];
-                let va = verts[a];
-                let t1 = new Vector3(nor.y, -nor.x, 0);
-                if (!(Math.abs(nor.x) > 0.5 || Math.abs(nor.y) > 0.5))
-                    t1 = new Vector3(-nor.z, 0, nor.x);
-                t1.normalize();
-                let t2 = new Vector3(0, 0, 0);
-                t2.crossVectors(nor, t1); 
 
-                
-                let b = nvert, c = nvert+1, d = nvert+2;   
+        //triangulation
+        nvert = verts.length;
+
+        for (let a = 0; a < verts.length; a++) {
+            let nor = nors[a];
+            let va = verts[a];
+            let t1 = new Vector3(nor.y, -nor.x, 0);
+            if (!(Math.abs(nor.x) > 0.5 || Math.abs(nor.y) > 0.5))
+                t1 = new Vector3(-nor.z, 0, nor.x);
+            t1.normalize();
+            let t2 = new Vector3(0, 0, 0);
+            t2.crossVectors(nor, t1);
+
+            for (let i = 0; i < 4; i++) {
+                let tmp = new Vector3(-t1.x, -t1.y, -t1.z);
+                t1 = new Vector3(t2.x, t2.y, t2.z);
+                t2 = new Vector3(tmp.x, tmp.y, tmp.z);
+                let b = nvert, c = nvert + 1, d = nvert + 2;
                 nvert += 3;
-                let vb = new Vector3(va.x + t1.x*xh, va.y + t1.y*xh, va.z + t1.z*xh);
-                let vc = new Vector3(vb.x - t2.x*xh, vb.y-t2.y*xh, vb.z - t2.z*xh);
-                let vd = new Vector3(vc.x - t1.x*xh, vc.y - t1.y*xh, vc.z - t1.z*xh);
-                
-                
-                
+                let vb = new Vector3(va.x + t1.x * xh, va.y + t1.y * xh, va.z + t1.z * xh);
+                let vc = new Vector3(vb.x - t2.x * xh, vb.y - t2.y * xh, vb.z - t2.z * xh);
+                let vd = new Vector3(vc.x - t1.x * xh, vc.y - t1.y * xh, vc.z - t1.z * xh);
+
+
+
                 vb = NormalUtils.surfacepoint(fun, vb.x, vb.y, vb.z);
                 vc = NormalUtils.surfacepoint(fun, vc.x, vc.y, vc.z);
                 vd = NormalUtils.surfacepoint(fun, vd.x, vd.y, vd.z);
 
-                let nb = NormalUtils.implicit_norm(fun, vb.x, vb.y, vb.z);    
-                let nc = NormalUtils.implicit_norm(fun, vc.x, vc.y, vc.z);    
-                let nd = NormalUtils.implicit_norm(fun, vd.x, vd.y, vd.z);    
+                let nb = NormalUtils.implicit_norm(fun, vb.x, vb.y, vb.z);
+                let nc = NormalUtils.implicit_norm(fun, vc.x, vc.y, vc.z);
+                let nd = NormalUtils.implicit_norm(fun, vd.x, vd.y, vd.z);
 
 
                 vertices.push(vb.x, vb.y, vb.z);
@@ -107,14 +112,15 @@ class ImplicitGeometry extends BufferGeometry {
 
 
 
-                
+
 
                 indices.push(a, c, b);
                 indices.push(a, d, c);
-
             }
-           
-        
+
+        }
+
+
 
         //console.log(indices);    
         this.setIndex(indices);
