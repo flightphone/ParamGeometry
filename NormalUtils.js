@@ -4,7 +4,8 @@ const eps = 0.001;
 class NormalUtils {
 
     static surfacepoint(fun, x, y, z) {
-        for (let i = 0; i < 100; i++) {
+    //https://www2.mathematik.tu-darmstadt.de/~ehartmann/cdgen0104.pdf    
+        for (let i = 0; i < 20; i++) {
             let dx = (fun(x + h, y, z) - fun(x - h, y, z)) / 2 / h;
             let dy = (fun(x, y + h, z) - fun(x, y - h, z)) / 2 / h;
             let dz = (fun(x, y, z + h) - fun(x, y, z - h)) / 2 / h;

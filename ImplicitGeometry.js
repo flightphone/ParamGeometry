@@ -8,10 +8,10 @@ class ImplicitGeometry extends BufferGeometry {
 
     constructor(fun = (x, y, z) => {
 
-    }, xmin = -1, xmax = 1, ymin = -1, ymax = 1, zmin = -1, zmax = 1, nseg = 30) {
+    }, xmin = -1, xmax = 1, ymin = -1, ymax = 1, zmin = -1, zmax = 1, nseg = 100) {
 
         super();
-        this.type = 'FunctionGeometry';
+        this.type = 'ImplicitGeometry';
 
         this.parameters = {
             fun: fun,
@@ -29,12 +29,10 @@ class ImplicitGeometry extends BufferGeometry {
         const indices = [];
         const vertices = [];
         const normals = [];
-        //const uvs = [];
         const verts = [];
         const nors = [];
-        //const mark = [];
         let nvert = 0;
-        //const graph = new Map();
+
 
         for (let i = 0; i < nseg; i++)
             for (let j = 0; j < nseg; j++)
@@ -91,8 +89,6 @@ class ImplicitGeometry extends BufferGeometry {
                 let vc = new Vector3(vb.x - t2.x * xh, vb.y - t2.y * xh, vb.z - t2.z * xh);
                 let vd = new Vector3(vc.x - t1.x * xh, vc.y - t1.y * xh, vc.z - t1.z * xh);
 
-
-
                 vb = NormalUtils.surfacepoint(fun, vb.x, vb.y, vb.z);
                 vc = NormalUtils.surfacepoint(fun, vc.x, vc.y, vc.z);
                 vd = NormalUtils.surfacepoint(fun, vd.x, vd.y, vd.z);
@@ -110,26 +106,15 @@ class ImplicitGeometry extends BufferGeometry {
                 normals.push(nc.x, nc.y, nc.z);
                 normals.push(nd.x, nd.y, nd.z);
 
-
-
-
-
                 indices.push(a, c, b);
                 indices.push(a, d, c);
             }
 
         }
 
-
-
-        //console.log(indices);    
         this.setIndex(indices);
         this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
         this.setAttribute('normal', new Float32BufferAttribute(normals, 3));
-        //this.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
-
-
-
     }
 
     copy(source) {
@@ -137,8 +122,6 @@ class ImplicitGeometry extends BufferGeometry {
         this.parameters = Object.assign({}, source.parameters);
         return this;
     }
-
-
 }
 
 export { ImplicitGeometry };

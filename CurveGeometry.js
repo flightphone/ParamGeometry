@@ -1,4 +1,4 @@
-import { BufferGeometry, Float32BufferAttribute, Vector3,  Matrix3 } from "three";
+import { BufferGeometry, Float32BufferAttribute, Vector3 } from "three";
 import { NormalUtils } from "./NormalUtils";
 class CurveGeometry extends BufferGeometry {
 

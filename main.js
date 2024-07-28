@@ -19,42 +19,49 @@ let hypotr = 3;
 
 const models = [
     //{ toString: () => "shpere", mode: "implicit", func: sphere, xmin: -2, xmax: 2, ymin: -2, ymax:2, zmin: -2, zmax:2, nseg:100},
-    { toString: () => "holed3", mode: "implicit", func: holed3, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
-    { toString: () => "holed2", mode: "implicit", func: holed2, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
-    { toString: () => "isf", mode: "implicit", func: isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
-    { toString: () => "rcube", mode: "implicit", func: rcube, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
-    { toString: () => "goursat", mode: "implicit", func: goursat, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
-    { toString: () => "riemann", mode: "implicit", func: riemann, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
-    { toString: () => "gayley", mode: "implicit", func: gayley, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
-    { toString: () => "clebsch", mode: "implicit", func: clebsch, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
-    { toString: () => "cassini", mode: "implicit", func: cassini, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -2, zmax: 2, nseg: 100 },
-    { toString: () => "gyroide", mode: "implicit", func: gyroide, xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
+    
 
 
 
 
-    { toString: () => "torus", mode: "curve", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 1., tseg: 100, rseg: 100, repeat: 2 },
-    { toString: () => "torus2", mode: "curveheight", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 100, rseg: 100, repeat: 8, height: 2 },
-    { toString: () => "torus3", mode: "curveclose", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 100, rseg: 100, repeat: 8, height: 2 },
+    
     { toString: () => "trefoil", mode: "curve", curve: trefoil, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6 },
     { toString: () => "torus knot", mode: "curve", curve: solenoid, tmin: 0, tmax: 4 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6, axis: 2 },
     { toString: () => "eight_knot", mode: "curve", curve: eight_knot, tmin: 0, tmax: 2 * Math.PI, radius: 0.6, tseg: 500, rseg: 50, repeat: 12, axis: 2 },
+    { toString: () => "torus", mode: "curve", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 1., tseg: 100, rseg: 100, repeat: 2 },
     { toString: () => "tennis", mode: "curve", curve: tennis, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 200, rseg: 40, repeat: 6 },
     { toString: () => "liss", mode: "curve", curve: liss, tmin: 0, tmax: 10 * Math.PI, radius: 0.3, tseg: 1000, rseg: 40, repeat: 50 },
     { toString: () => "liss2", mode: "curve", curve: liss2, tmin: 0, tmax: 4 * Math.PI, radius: 0.4, tseg: 500, rseg: 40, repeat: 12 },
     { toString: () => "rose", mode: "curve", curve: rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 50 },
-    { toString: () => "rose2", mode: "curveheight", curve: rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 100, height: 2 },
-    { toString: () => "rose3", mode: "curveclose", curve: rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 100, height: 2 },
-    { toString: () => "quart", mode: "curveclose", curve: quart, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 1000, rseg: 40, repeat: 2, axis: 2 },
     { toString: () => "sine", mode: "surf", surf: sine, umin: 0, umax: 2 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 1 },
     { toString: () => "roman", mode: "surf", surf: romanp, umin: 0, umax: Math.PI, vmin: 0, vmax: Math.PI, useg: 100, vseg: 100, repeat: 1 },
     { toString: () => "klein", mode: "surf", surf: klein, umin: 2 * Math.PI, umax: 0, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 2 },
     { toString: () => "shell", mode: "surf", surf: shell, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 8 },
-    { toString: () => "mebius", mode: "surf", surf: mebius, umin: 0, umax: 4 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 500, vseg: 100, repeat: 4 },
-    { toString: () => "boys", mode: "surf", surf: boys, umin: 0, umax: Math.PI, vmin: 0, vmax: Math.PI, useg: 100, vseg: 100, repeat: 1 },
-    { toString: () => "desmos_spiral", mode: "surf", surf: desmos_spiral, umin: 0, umax: 1, vmin: 0, vmax: 1, useg: 100, vseg: 100, repeat: 8 },
     { toString: () => "coil", mode: "surf", surf: coil, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 16 },
     { toString: () => "hypotrochoid", mode: "curve", curve: hypotrochoid, tmin: 0, tmax: hypotr * 2 * Math.PI, radius: 0.5, tseg: 1000, rseg: 50, repeat: 40, axis: 2 },
+    { toString: () => "mebius", mode: "surf", surf: mebius, umin: 0, umax: 4 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 500, vseg: 100, repeat: 4 },
+
+    { toString: () => "holed3 (implicit)", mode: "implicit", func: holed3, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
+    { toString: () => "holed2 (implicit)", mode: "implicit", func: holed2, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
+    { toString: () => "Genus-two(implicit)", mode: "implicit", func: isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
+    { toString: () => "round-cube (implicit)", mode: "implicit", func: rcube, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
+    { toString: () => "goursat (implicit)", mode: "implicit", func: goursat, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
+    { toString: () => "riemann (implicit)", mode: "implicit", func: riemann, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
+    { toString: () => "gayley (implicit)", mode: "implicit", func: gayley, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
+    { toString: () => "clebsch (implicit)", mode: "implicit", func: clebsch, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
+    //{ toString: () => "cassini (implicit)", mode: "implicit", func: cassini, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -2, zmax: 2, nseg: 100 },
+    { toString: () => "gyroide (implicit)", mode: "implicit", func: gyroide, xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
+    
+    { toString: () => "torus2", mode: "curveheight", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 100, rseg: 100, repeat: 8, height: 2 },
+    { toString: () => "torus3", mode: "curveclose", curve: circ, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 100, rseg: 100, repeat: 8, height: 2 },
+    { toString: () => "rose2", mode: "curveheight", curve: rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 100, height: 2 },
+    { toString: () => "rose3", mode: "curveclose", curve: rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 100, height: 2 },
+    { toString: () => "quart", mode: "curveclose", curve: quart, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 1000, rseg: 40, repeat: 2, axis: 2 },
+    
+    
+    { toString: () => "boys", mode: "surf", surf: boys, umin: 0, umax: Math.PI, vmin: 0, vmax: Math.PI, useg: 100, vseg: 100, repeat: 1 },
+    { toString: () => "desmos_spiral", mode: "surf", surf: desmos_spiral, umin: 0, umax: 1, vmin: 0, vmax: 1, useg: 100, vseg: 100, repeat: 8 },
+    
     //{ toString: () => "egg_box", mode: "func", func: egg_box, xmin: -4, xmax: 4, ymin: -4, ymax:4, zmin: -10, zmax:10, xseg:300, yseg:300},
     { toString: () => "egg_box", mode: "surf", surf: egg_box1, umin: -4, umax: 4, vmin: -4, vmax: 4, useg: 100, vseg: 100, repeat: 1 },
 
