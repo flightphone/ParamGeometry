@@ -1,4 +1,4 @@
-import { BufferGeometry, Float32BufferAttribute, Vector3 } from "three";
+import { BufferGeometry, Float32BufferAttribute } from "three";
 
 import { NormalUtils } from "./NormalUtils";
 
