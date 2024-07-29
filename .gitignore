@@ -8,6 +8,8 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+*.py
+
 node_modules
 dist
 dist-ssr
@@ -24,4 +26,4 @@ tests
 *.njsproj
 *.sln
 *.sw?
-*.py
+
