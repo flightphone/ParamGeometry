@@ -6,7 +6,7 @@ class MathCurve {
     {
         let a = 1, b = 1, c = 2;
         let x = a*(Math.cos(u) - v* Math.sin(u)), y = b*(Math.sin(u) + v*Math.cos(u)),
-        z= c*v;
+        z= -c*v;
         return new Vector3(x, y, z);
 
     }
