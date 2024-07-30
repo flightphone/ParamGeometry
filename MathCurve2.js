@@ -10,35 +10,25 @@ class MathCurve {
         return new Vector3(x, y, z);
 
     }
+    static sch(x, y, z)
+    {
+        return -(Math.cos(x) + Math.cos(y) + Math.cos(z));
+    }
+    static astroidal_ellipsoid(u, v)
+    {
+        //https://mathcurve.com/surfaces.gb/astroidal/astroidal.shtml
+        let a = 5, cu = Math.cos(u), cv = Math.cos(v), su = Math.sin(u), sv = Math.sin(v);
+        let x = a*cu*cu*cu*cv*cv*cv, y = a*su*su*su*cv*cv*cv, z = a*sv*sv*sv;
+        return new Vector3(x, y, z);
+
+    }
+    static cubic(x, y, z)
+    {
+        let a = 1;
+        //let v = new Vector3(x, y, z);
+        return x*(x*x - 3*y*y) - z*(z*z - a*a);
+    }
 }
 
 export {MathCurve};
 
-//https://ru.wikipedia.org/wiki/Marching_cubes
-//https://github.com/hofk/THREEi.js
-//https://k3dsurf.sourceforge.net/
-//https://mathcurve.com/surfaces.gb/costa/costa.shtml
-//https://mathcurve.com/surfaces.gb/weber/weber.shtml
-//https://mathcurve.com/courbes2d.gb/hypotrochoid/hypotrochoid.shtml
-
-
-
-//https://paulbourke.net/geometry/polygonise/
-//https://threejs.org/examples/webgl_marchingcubes.html
-
-
-//https://github.com/KineticTactic/marching-cubes-js/blob/master/sketch.js
-//https://habr.com/ru/articles/358658/
-//https://www.boristhebrave.com/2018/04/15/dual-contouring-tutorial/
-//https://github.com/Domenicobrz/Dual-Contouring-javascript-implementation
-//https://github.com/Domenicobrz/Dual-Contouring-javascript-implementation/blob/master/README.md
-
-//Погорелов 89
-
-//https://mathcurve.com/surfaces.gb/tore/tn.shtml
-//https://mathcurve.com/courbes2d/gerono/gerono.shtml
-
-//https://ru.wikipedia.org/wiki/POV-Ray
-
-//https://mathcurve.com/courbes2d.gb/scarabee/scarabee.shtml
-//https://mathcurve.com/surfaces.gb/hyperboloid/hyperboloid1.shtm

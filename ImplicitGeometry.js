@@ -1,14 +1,26 @@
 import { BufferGeometry, Float32BufferAttribute, Vector3 } from "three";
 
 import { NormalUtils } from "./NormalUtils";
-function createKey(i, j, k) {
-    return (i.toString() + '_' + j.toString() + '_' + k.toString());
-}
+
 class ImplicitGeometry extends BufferGeometry {
 
     constructor(fun = (x, y, z) => {
 
     }, xmin = -1, xmax = 1, ymin = -1, ymax = 1, zmin = -1, zmax = 1, nseg = 100) {
+        let rr = 0;
+        if (xmin == xmax)
+        {
+            xmin = -xmax;
+            rr = xmax;
+        }
+
+        function isBound(p) {
+            if (rr)
+                return (p.length() < rr);
+            else    
+                return (p.x > xmin && p.x < xmax && p.y > ymin && p.y < ymax && p.z > zmin && p.z < zmax)
+            
+        }
 
         super();
         this.type = 'ImplicitGeometry';
@@ -43,16 +55,18 @@ class ImplicitGeometry extends BufferGeometry {
                         for (let j2 = 0; j2 < 2; j2++)
                             for (let k2 = 0; k2 < 2; k2++) {
                                 let x2 = x + i2 * xh, y2 = y + j2 * yh, z2 = z + k2 * zh;
-                                if (fun(x2, y2, z2) >= 0)
-                                    nplus += 1;
-                                else
-                                    nminus += 1;
+                                //if (isBound(new Vector3(x2, y2, z2))) {
+                                    if (fun(x2, y2, z2) >= 0)
+                                        nplus += 1;
+                                    else
+                                        nminus += 1;
+                                //}
                             }
                     if (nplus * nminus > 0) {
                         let x2 = x + xh / 2, y2 = y + yh / 2, z2 = z + zh / 2;
                         let po = NormalUtils.surfacepoint(fun, x2, y2, z2);
                         let nor = NormalUtils.implicit_norm(fun, po.x, po.y, po.z);
-                        if (po.x >= xmin && po.x <= xmax && po.y >= ymin && po.y <= ymax && po.z >= zmin && po.z <= zmax) {
+                        if (isBound(po)) {
                             vertices.push(po.x, po.y, po.z);
                             normals.push(nor.x, nor.y, nor.z);
                             nors.push(nor);
@@ -63,12 +77,9 @@ class ImplicitGeometry extends BufferGeometry {
 
                 }
 
-        //
-
-
         //triangulation
         nvert = verts.length;
-
+        let ke = 1;
         for (let a = 0; a < verts.length; a++) {
             let nor = nors[a];
             let va = verts[a];
@@ -78,6 +89,10 @@ class ImplicitGeometry extends BufferGeometry {
             t1.normalize();
             let t2 = new Vector3(0, 0, 0);
             t2.crossVectors(nor, t1);
+
+            t1.multiplyScalar(ke);
+            t2.multiplyScalar(ke);
+
 
             for (let i = 0; i < 4; i++) {
                 let tmp = new Vector3(-t1.x, -t1.y, -t1.z);
@@ -89,9 +104,12 @@ class ImplicitGeometry extends BufferGeometry {
                 let vc = new Vector3(vb.x - t2.x * xh, vb.y - t2.y * xh, vb.z - t2.z * xh);
                 let vd = new Vector3(vc.x - t1.x * xh, vc.y - t1.y * xh, vc.z - t1.z * xh);
 
-                vb = NormalUtils.surfacepoint(fun, vb.x, vb.y, vb.z);
-                vc = NormalUtils.surfacepoint(fun, vc.x, vc.y, vc.z);
-                vd = NormalUtils.surfacepoint(fun, vd.x, vd.y, vd.z);
+                if (isBound(vb))
+                    vb = NormalUtils.surfacepoint(fun, vb.x, vb.y, vb.z);
+                if (isBound(vc))
+                    vc = NormalUtils.surfacepoint(fun, vc.x, vc.y, vc.z);
+                if (isBound(vd))
+                    vd = NormalUtils.surfacepoint(fun, vd.x, vd.y, vd.z);
 
                 let nb = NormalUtils.implicit_norm(fun, vb.x, vb.y, vb.z);
                 let nc = NormalUtils.implicit_norm(fun, vc.x, vc.y, vc.z);
@@ -106,8 +124,25 @@ class ImplicitGeometry extends BufferGeometry {
                 normals.push(nc.x, nc.y, nc.z);
                 normals.push(nd.x, nd.y, nd.z);
 
-                indices.push(a, c, b);
-                indices.push(a, d, c);
+                //indices.push(a, c, b);
+                //indices.push(a, d, c);
+                //a, b,
+                //d, c
+
+                if (!isBound(vc)) {
+                    if (isBound(vd) && isBound(vb))
+                        indices.push(a, d, b);
+                }
+                else {
+
+                    if (isBound(vb))
+                        indices.push(a, c, b);
+                    if (isBound(vd))
+                        indices.push(a, d, c);
+
+                }
+
+
             }
 
         }

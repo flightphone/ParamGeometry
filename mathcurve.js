@@ -199,11 +199,11 @@ function riemann(x, y, z) {
 }
 
 function sphere(x, y, z) {
-    return (x * x + y * y + z * z - 4);
+    return (x * x + y * y + z * z - 3.9*3.9);
 }
 
 function clebsch(x, y, z) {
-    let t = 1, k = 1;
+    let t = 2, k = 3.5;
     let u = x + y + z + t;
     return -(k * (x * x * x + y * y * y + z * z * z + t * t * t) - u * u * u);
 }
