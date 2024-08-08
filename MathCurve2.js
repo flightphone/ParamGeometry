@@ -2,6 +2,23 @@ import { Vector3} from "three";
 
 
 class MathCurve {
+    static kummer(x, y, z)
+    {
+        let a = 1, m = 1, l = 1, s2 = Math.sqrt(2);
+        let f = x*x + y*y + z*z - m*a*a, p = z - a + x*s2,
+        q = z - a - x*s2, r = z + a + y*s2, s = z + a - y*s2;
+        return f - l*p*q*r*s;
+        
+    }
+
+    static kummerj(x, y, z)
+    {
+        
+        let res =  x*x*x*x + y*y*y*y + z*z*z*z - 5* (x*x*y*y + y*y*z*z + z*z*x*x) +56 *x*y*z -
+        20 * (x*x + y*y + z*z) + 16 ;
+        return res;
+        
+    }
     static hyperboloid(u, v)
     {
         let a = 1, b = 1, c = 2;
