@@ -1,7 +1,40 @@
-import { Vector3, Matrix3 } from "three";
+import { Vector3, Matrix3, BufferGeometry, Float32BufferAttribute, CurvePath } from "three";
 const h = 0.001;
 const eps = 0.001;
 class NormalUtils {
+    static path(t, p = new CurvePath())
+    {
+        let n = p.curves.length;
+        if (t < 0)
+            t+=n;
+        let i = Math.floor(t);
+        t -= i;
+        i = i%n; 
+        let res = p.curves[i].getPointAt(t);
+        return new Vector3(res.x, res.y, res.z);
+    }
+    static addGeom(geoms = [new BufferGeometry()]) {
+        const indices = [];
+        const vertices = [];
+        const normals = [];
+        const uvs = [];
+        const res = new BufferGeometry();
+        let n = 0;
+        geoms.forEach((g1) => {
+            g1.getIndex().array.forEach((e) => indices.push(e + n));
+            g1.getAttribute('position').array.forEach((e) => vertices.push(e));
+            g1.getAttribute('normal').array.forEach((e) => normals.push(e));
+            g1.getAttribute('uv').array.forEach((e) => uvs.push(e));
+            n += g1.getAttribute('position').array.length / 3;
+        });
+    
+        res.setIndex(indices);
+        res.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+        res.setAttribute('normal', new Float32BufferAttribute(normals, 3));
+        res.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
+        return res;
+    }
+    
 
     static surfacepoint(fun, x, y, z) {
     //https://www2.mathematik.tu-darmstadt.de/~ehartmann/cdgen0104.pdf    
@@ -101,7 +134,7 @@ class NormalUtils {
     }
     static curve_norm2(curve, t) {
         //let h = 0.05;
-        let vt = curve(t);
+        let vt = curve(t-h);
         let vth = curve(t + h);
         let r1 = new Vector3(vth.x - vt.x, vth.y - vt.y, vth.z - vt.z);
         r1.normalize();
