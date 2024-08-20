@@ -39,7 +39,28 @@ const fishShape = new THREE.Shape()
 let scale = 5;
 let kj = 7
 const models = [
-    { toString: () => "shpere", mode: "implicit", func: MCF.sphere, xmin: -4, xmax: 4, ymin: -4, ymax:4, zmin: -4, zmax:4, nseg:100},
+    //{ toString: () => "shpere", mode: "implicit", func: MCF.sphere, xmin: -4, xmax: 4, ymin: -4, ymax:4, zmin: -4, zmax:4, nseg:100},
+    
+    { toString: () => "hyperboloid", mode: "surf", surf: MathCurve.hyperboloid, umin: 0, umax: 2 * Math.PI, vmin: -2, vmax: 2, useg: 200, vseg: 100, repeat: 1 },
+    { toString: () => "trefoil", mode: "curve", curve: MCF.trefoil, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6 },
+    { toString: () => "torus knot", mode: "curve", curve: MCF.solenoid, tmin: 0, tmax: 4 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6, axis: 2 },
+    { toString: () => "eight_knot", mode: "curve", curve: MCF.eight_knot, tmin: 0, tmax: 2 * Math.PI, radius: 0.6, tseg: 500, rseg: 50, repeat: 12, axis: 2 },
+    { toString: () => "astroidal_ellipsoid", mode: "surf", surf: MathCurve.astroidal_ellipsoid, umin: 0, umax: Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 1 },
+    { toString: () => "torus", mode: "curve", curve: MCF.circ, tmin: 0, tmax: 2 * Math.PI, radius: 1., tseg: 100, rseg: 100, repeat: 2 },
+    { toString: () => "tennis", mode: "curve", curve: MCF.tennis, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 200, rseg: 40, repeat: 6 },
+    { toString: () => "liss", mode: "curve", curve: MCF.liss, tmin: 0, tmax: 10 * Math.PI, radius: 0.3, tseg: 1000, rseg: 40, repeat: 50 },
+    { toString: () => "liss2", mode: "curve", curve: MCF.liss2, tmin: 0, tmax: 4 * Math.PI, radius: 0.4, tseg: 500, rseg: 40, repeat: 12 },
+    { toString: () => "rose", mode: "curve", curve: MCF.rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 50 },
+    { toString: () => "sine", mode: "surf", surf: MCF.sine, umin: 0, umax: 2 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 1 },
+    { toString: () => "roman", mode: "surf", surf: MCF.romanp, umin: 0, umax: Math.PI, vmin: 0, vmax: Math.PI, useg: 100, vseg: 100, repeat: 1 },
+    { toString: () => "klein", mode: "surf", surf: MCF.klein, umin: 2 * Math.PI, umax: 0, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 2 },
+    { toString: () => "shell", mode: "surf", surf: MCF.shell, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 8 },
+    { toString: () => "coil", mode: "surf", surf: MCF.coil, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 16 },
+    { toString: () => "hypotrochoid", mode: "curve", curve: MCF.hypotrochoid, tmin: 0, tmax: 3 * 2 * Math.PI, radius: 0.5, tseg: 1000, rseg: 50, repeat: 40, axis: 2 },
+    { toString: () => "hypotrochoid2", mode: "curveheight", curve: MCF.hypotrochoid, tmin: 0, tmax: 3 * 2 * Math.PI, radius: 0.5, tseg: 1000, rseg: 50, repeat: 40, height: 2 },
+    { toString: () => "mebius", mode: "surf", surf: MCF.mebius, umin: 0, umax: 4 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 500, vseg: 100, repeat: 4 },
+
+
     { toString: () => "kummer Jeener(implicit)", mode: "implicit", func: MathCurve.kummerj, xmin: -kj, xmax: kj, ymin: -kj, ymax: kj, zmin: -kj, zmax: kj, nseg: 170 },
     { toString: () => "kummer(implicit)", mode: "implicit", func: MathCurve.kummer, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
     { toString: () => "Genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
@@ -61,25 +82,6 @@ const models = [
     { toString: () => "gyroide (implicit)", mode: "implicit", func: MCF.gyroide, xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
     { toString: () => "cylinders(implicit)", mode: "implicit", func: MathCurve.cylinder, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -4, zmax: 2, nseg: 100 },
 
-
-    { toString: () => "hyperboloid", mode: "surf", surf: MathCurve.hyperboloid, umin: 0, umax: 2 * Math.PI, vmin: -2, vmax: 2, useg: 200, vseg: 100, repeat: 1 },
-    { toString: () => "trefoil", mode: "curve", curve: MCF.trefoil, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6 },
-    { toString: () => "torus knot", mode: "curve", curve: MCF.solenoid, tmin: 0, tmax: 4 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6, axis: 2 },
-    { toString: () => "eight_knot", mode: "curve", curve: MCF.eight_knot, tmin: 0, tmax: 2 * Math.PI, radius: 0.6, tseg: 500, rseg: 50, repeat: 12, axis: 2 },
-    { toString: () => "astroidal_ellipsoid", mode: "surf", surf: MathCurve.astroidal_ellipsoid, umin: 0, umax: Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 1 },
-    { toString: () => "torus", mode: "curve", curve: MCF.circ, tmin: 0, tmax: 2 * Math.PI, radius: 1., tseg: 100, rseg: 100, repeat: 2 },
-    { toString: () => "tennis", mode: "curve", curve: MCF.tennis, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 200, rseg: 40, repeat: 6 },
-    { toString: () => "liss", mode: "curve", curve: MCF.liss, tmin: 0, tmax: 10 * Math.PI, radius: 0.3, tseg: 1000, rseg: 40, repeat: 50 },
-    { toString: () => "liss2", mode: "curve", curve: MCF.liss2, tmin: 0, tmax: 4 * Math.PI, radius: 0.4, tseg: 500, rseg: 40, repeat: 12 },
-    { toString: () => "rose", mode: "curve", curve: MCF.rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 50 },
-    { toString: () => "sine", mode: "surf", surf: MCF.sine, umin: 0, umax: 2 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 1 },
-    { toString: () => "roman", mode: "surf", surf: MCF.romanp, umin: 0, umax: Math.PI, vmin: 0, vmax: Math.PI, useg: 100, vseg: 100, repeat: 1 },
-    { toString: () => "klein", mode: "surf", surf: MCF.klein, umin: 2 * Math.PI, umax: 0, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 2 },
-    { toString: () => "shell", mode: "surf", surf: MCF.shell, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 8 },
-    { toString: () => "coil", mode: "surf", surf: MCF.coil, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 16 },
-    { toString: () => "hypotrochoid", mode: "curve", curve: MCF.hypotrochoid, tmin: 0, tmax: 3 * 2 * Math.PI, radius: 0.5, tseg: 1000, rseg: 50, repeat: 40, axis: 2 },
-    { toString: () => "hypotrochoid2", mode: "curveheight", curve: MCF.hypotrochoid, tmin: 0, tmax: 3 * 2 * Math.PI, radius: 0.5, tseg: 1000, rseg: 50, repeat: 40, height: 2 },
-    { toString: () => "mebius", mode: "surf", surf: MCF.mebius, umin: 0, umax: 4 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 500, vseg: 100, repeat: 4 },
 
 
     { toString: () => "torus2", mode: "curveheight", curve: MCF.circ, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 100, rseg: 100, repeat: 8, height: 2 },
