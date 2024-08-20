@@ -1,26 +1,15 @@
-import { BufferGeometry, Float32BufferAttribute, Vector3 } from "three";
+//Provides a function for performing 3D Marching Cubes
+//https://www.boristhebrave.com/2018/04/15/marching-cubes-3d-tutorial/
 
+import { BufferGeometry, Float32BufferAttribute, Vector3 } from "three";
 import { NormalUtils } from "./NormalUtils";
+import * as TR from './trtables';
 
 class ImplicitGeometry extends BufferGeometry {
 
     constructor(fun = (x, y, z) => {
 
     }, xmin = -1, xmax = 1, ymin = -1, ymax = 1, zmin = -1, zmax = 1, nseg = 100) {
-        let rr = 0;
-        if (xmin == xmax)
-        {
-            xmin = -xmax;
-            rr = xmax;
-        }
-
-        function isBound(p) {
-            if (rr)
-                return (p.length() < rr);
-            else    
-                return (p.x > xmin && p.x < xmax && p.y > ymin && p.y < ymax && p.z > zmin && p.z < zmax)
-            
-        }
 
         super();
         this.type = 'ImplicitGeometry';
@@ -41,115 +30,169 @@ class ImplicitGeometry extends BufferGeometry {
         const indices = [];
         const vertices = [];
         const normals = [];
-        const verts = [];
-        const nors = [];
+        const shifts = {
+            x: [[1, 0, 0], [1, 1, 0], [1, 0, 1], [1, 1, 1]],
+            y: [[0, 1, 0], [1, 1, 0], [0, 1, 1], [1, 1, 1]],
+            z: [[0, 0, 1], [1, 0, 1], [0, 1, 1], [1, 1, 1]],
+        }
         let nvert = 0;
 
+        const cubes = new Map();
 
+        let fval = [];
         for (let i = 0; i < nseg; i++)
             for (let j = 0; j < nseg; j++)
-                for (let k = 0; k < nseg; k++) {
-                    let x = xmin + i * xh, y = ymin + j * yh, z = zmin + k * zh;
-                    let nplus = 0, nminus = 0;
-                    for (let i2 = 0; i2 < 2; i2++)
-                        for (let j2 = 0; j2 < 2; j2++)
-                            for (let k2 = 0; k2 < 2; k2++) {
-                                let x2 = x + i2 * xh, y2 = y + j2 * yh, z2 = z + k2 * zh;
-                                //if (isBound(new Vector3(x2, y2, z2))) {
-                                    if (fun(x2, y2, z2) >= 0)
-                                        nplus += 1;
-                                    else
-                                        nminus += 1;
-                                //}
-                            }
-                    if (nplus * nminus > 0) {
-                        let x2 = x + xh / 2, y2 = y + yh / 2, z2 = z + zh / 2;
-                        let po = NormalUtils.surfacepoint(fun, x2, y2, z2);
-                        let nor = NormalUtils.implicit_norm(fun, po.x, po.y, po.z);
-                        if (isBound(po)) {
-                            vertices.push(po.x, po.y, po.z);
-                            normals.push(nor.x, nor.y, nor.z);
-                            nors.push(nor);
-                            verts.push(po);
-                        }
+                fval.push(0);
 
+        for (let k = 0; k < nseg; k++)
+            for (let i = 0; i < nseg; i++)
+                for (let j = 0; j < nseg; j++) {
+                    let x = xmin + i * xh, y = ymin + j * yh, z = zmin + k * zh;
+                    let val = fun(x, y, z);
+                    let cpoint = new Vector3(x, y, z);
+
+
+                    if (k > 0) {
+                        let val0 = fval[i * nseg + j]
+                        if (Math.sign(val0) * Math.sign(val) <= 0) {
+                            let po = getPoint(new Vector3(x, y, zmin + (k - 1) * zh), cpoint, val0, val);
+                            addPoint(po);
+                            addIndex(i, j, k, 'z');
+                        }
+                    }
+                    fval[i * nseg + j] = val;
+                    if (j > 0) {
+                        let val0 = fval[i * nseg + j - 1]
+                        if (Math.sign(val0) * Math.sign(val) <= 0) {
+                            let po = getPoint(new Vector3(x, ymin + (j - 1) * yh, z), cpoint, val0, val);
+                            addPoint(po);
+                            addIndex(i, j, k, 'y');
+                        }
+                    }
+                    if (i > 0) {
+                        let val0 = fval[(i - 1) * nseg + j]
+                        if (Math.sign(val0) * Math.sign(val) <= 0) {
+                            let po = getPoint(new Vector3(xmin + (i - 1) * xh, y, z), cpoint, val0, val);
+                            addPoint(po);
+                            addIndex(i, j, k, 'x');
+                        }
                     }
 
                 }
 
+
+
         //triangulation
-        nvert = verts.length;
-        let ke = 1;
-        for (let a = 0; a < verts.length; a++) {
-            let nor = nors[a];
-            let va = verts[a];
-            let t1 = new Vector3(nor.y, -nor.x, 0);
-            if (!(Math.abs(nor.x) > 0.5 || Math.abs(nor.y) > 0.5))
-                t1 = new Vector3(-nor.z, 0, nor.x);
-            t1.normalize();
-            let t2 = new Vector3(0, 0, 0);
-            t2.crossVectors(nor, t1);
 
-            t1.multiplyScalar(ke);
-            t2.multiplyScalar(ke);
-
-
-            for (let i = 0; i < 4; i++) {
-                let tmp = new Vector3(-t1.x, -t1.y, -t1.z);
-                t1 = new Vector3(t2.x, t2.y, t2.z);
-                t2 = new Vector3(tmp.x, tmp.y, tmp.z);
-                let b = nvert, c = nvert + 1, d = nvert + 2;
-                nvert += 3;
-                let vb = new Vector3(va.x + t1.x * xh, va.y + t1.y * xh, va.z + t1.z * xh);
-                let vc = new Vector3(vb.x - t2.x * xh, vb.y - t2.y * xh, vb.z - t2.z * xh);
-                let vd = new Vector3(vc.x - t1.x * xh, vc.y - t1.y * xh, vc.z - t1.z * xh);
-
-                if (isBound(vb))
-                    vb = NormalUtils.surfacepoint(fun, vb.x, vb.y, vb.z);
-                if (isBound(vc))
-                    vc = NormalUtils.surfacepoint(fun, vc.x, vc.y, vc.z);
-                if (isBound(vd))
-                    vd = NormalUtils.surfacepoint(fun, vd.x, vd.y, vd.z);
-
-                let nb = NormalUtils.implicit_norm(fun, vb.x, vb.y, vb.z);
-                let nc = NormalUtils.implicit_norm(fun, vc.x, vc.y, vc.z);
-                let nd = NormalUtils.implicit_norm(fun, vd.x, vd.y, vd.z);
-
-
-                vertices.push(vb.x, vb.y, vb.z);
-                vertices.push(vc.x, vc.y, vc.z);
-                vertices.push(vd.x, vd.y, vd.z);
-
-                normals.push(nb.x, nb.y, nb.z);
-                normals.push(nc.x, nc.y, nc.z);
-                normals.push(nd.x, nd.y, nd.z);
-
-                //indices.push(a, c, b);
-                //indices.push(a, d, c);
-                //a, b,
-                //d, c
-
-                if (!isBound(vc)) {
-                    if (isBound(vd) && isBound(vb))
-                        indices.push(a, d, b);
-                }
-                else {
-
-                    if (isBound(vb))
+        cubes.forEach((value, key) => {
+            let faces = TR.cases[getCase(key)];
+                faces.forEach((s) => {
+                    let a = value.get(s[0]);
+                    let b = value.get(s[1]);
+                    let c = value.get(s[2]);
+                    if (a == null || b == null || c == null)
+                        console.log(key)
+                    else
                         indices.push(a, c, b);
-                    if (isBound(vd))
-                        indices.push(a, d, c);
-
-                }
-
-
-            }
-
-        }
+                });
+            
+        })
 
         this.setIndex(indices);
         this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
         this.setAttribute('normal', new Float32BufferAttribute(normals, 3));
+
+        function getCase(n) {
+            let i = Math.floor(n / 1000000);
+            n = n - i * 1000000;
+            let j = Math.floor(n / 1000);
+            let k = n - j * 1000;
+            let c = 0;
+            for (let t = 0; t < 8; t++) {
+                let v_pos = TR.VERTICES[t];
+                let x = xmin + (i + v_pos[0]) * xh, y = ymin + (j + v_pos[1]) * yh, z = zmin + (k + v_pos[2]) * zh;
+                let val = fun(x, y, z);
+                if (val > 0)
+                    c += Math.pow(2, t);
+            }
+            return c;
+        }
+        function getCubeNum(i, j, k) {
+            return (i * 1000000 + j * 1000 + k)
+        }
+        function getVertexNum(s) {
+            let j = s[0] * 4 + s[1] * 2 + s[2];
+            return TR.cubevert[j];
+        }
+
+        function getEdgeNum(v1, v2) {
+            let j = v1 * 8 + v2;
+            return TR.EDGESmap.get(j);
+        }
+
+        function addIndex(i, j, k, axis) {
+            let sh = []
+            if (axis == 'x')
+                sh = shifts.x;
+            if (axis == 'y')
+                sh = shifts.y;
+            if (axis == 'z')
+                sh = shifts.z;
+            sh.forEach((s) => {
+                let i1 = i - s[0], j1 = j - s[1], k1 = k - s[2];
+                if (i1 > -1 && j1 > -1 && k1 > -1) {
+                    let ncub = getCubeNum(i1, j1, k1);
+                    let egcub = cubes.get(ncub);
+                    if (egcub == null) {
+                        egcub = new Map();
+                        cubes.set(ncub, egcub);
+                    }
+
+                    let s0 = [s[0], s[1], s[2]];
+                    if (axis == 'x')
+                        s0[0] = 0;
+                    if (axis == 'y')
+                        s0[1] = 0;
+                    if (axis == 'z')
+                        s0[2] = 0;
+                    let v0 = getVertexNum(s0);
+                    let v1 = getVertexNum(s);
+                    let edg = getEdgeNum(v0, v1);
+                    egcub.set(edg, nvert - 1);
+                }
+            });
+
+        }
+        function addPoint(po = new Vector3) {
+            vertices.push(po.x, po.y, po.z);
+            let nor = NormalUtils.implicit_norm(fun, po.x, po.y, po.z);
+            normals.push(nor.x, nor.y, nor.z);
+            nvert += 1;
+        }
+        function getPoint(a1 = new Vector3(), b1 = new Vector3(), v0, v1) {
+            let a = new Vector3(a1.x, a1.y, a1.z);
+            let b = new Vector3(b1.x, b1.y, b1.z);
+            let res = new Vector3()
+            let n = 10;
+            let m = new Vector3();
+            for (let i = 0; i < n; i++) {
+                m.addVectors(a, b);
+                m.multiplyScalar(0.5);
+                let v = fun(m.x, m.y, m.z);
+                if (v == 0)
+                    break;
+
+                if (Math.sign(v) * Math.sign(v0) <= 0) {
+                    v1 = v;
+                    b = new Vector3(m.x, m.y, m.z);
+                }
+                else {
+                    v0 = v;
+                    a = new Vector3(m.x, m.y, m.z);
+                }
+            }
+            return m;
+        }
     }
 
     copy(source) {

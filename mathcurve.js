@@ -237,7 +237,7 @@ function holed3(x, y, z) {
 
 function tors(x, y, z) {
     //https://mathcurve.com/surfaces.gb/tore/tn.shtml
-    let R2 = 1, a2 = 0.04, r = 0.01, x2 = x * x, y2 = y * y, z2 = z * z;
+    let R2 = 1.0, a2 = 0.04, r = 0.01, x2 = x * x, y2 = y * y, z2 = z * z;
     let u = (x2 + y2 + z2 + R2 - a2);
     let f1 = u*u - 4*R2* (x2+y2);
     let f2 = u*u - 4*R2* (x2+z2);
