@@ -1,5 +1,7 @@
 //Provides a function for performing 3D Marching Cubes
 //https://www.boristhebrave.com/2018/04/15/marching-cubes-3d-tutorial/
+//https://paulbourke.net/geometry/polygonise/
+
 
 import { BufferGeometry, Float32BufferAttribute, Vector3 } from "three";
 import { NormalUtils } from "./NormalUtils";
@@ -9,7 +11,7 @@ class ImplicitGeometry extends BufferGeometry {
 
     constructor(fun = (x, y, z) => {
 
-    }, xmin = -1, xmax = 1, ymin = -1, ymax = 1, zmin = -1, zmax = 1, nseg = 100) {
+    }, xmin = -1, xmax = 1, ymin = -1, ymax = 1, zmin = -1, zmax = 1, nseg = 100, newton = 10) {
 
         super();
         this.type = 'ImplicitGeometry';
@@ -22,7 +24,8 @@ class ImplicitGeometry extends BufferGeometry {
             ymax: ymax,
             zmin: zmin,
             zmax: zmax,
-            nseg: nseg
+            nseg: nseg,
+            newton: newton
         };
         let xh = (xmax - xmin) / (nseg - 1), yh = (ymax - ymin) / (nseg - 1),
             zh = (zmax - zmin) / (nseg - 1);
@@ -91,7 +94,7 @@ class ImplicitGeometry extends BufferGeometry {
                     let b = value.get(s[1]);
                     let c = value.get(s[2]);
                     if (a == null || b == null || c == null)
-                        console.log(key)
+                       ; //console.log(key)
                     else
                         indices.push(a, c, b);
                 });
@@ -172,10 +175,8 @@ class ImplicitGeometry extends BufferGeometry {
         function getPoint(a1 = new Vector3(), b1 = new Vector3(), v0, v1) {
             let a = new Vector3(a1.x, a1.y, a1.z);
             let b = new Vector3(b1.x, b1.y, b1.z);
-            let res = new Vector3()
-            let n = 10;
             let m = new Vector3();
-            for (let i = 0; i < n; i++) {
+            for (let i = 0; i < newton; i++) {
                 m.addVectors(a, b);
                 m.multiplyScalar(0.5);
                 let v = fun(m.x, m.y, m.z);

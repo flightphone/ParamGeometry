@@ -11,6 +11,7 @@ import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 import * as MCF from './mathcurve.js'
 import { MathCurve } from './MathCurve2';
 import { NormalUtils } from "./NormalUtils";
+import { Balls } from './balls';
 
 const x = 0, y = 0;
 const heartShape = new THREE.Shape();
@@ -28,18 +29,22 @@ function heart() {
 heart();
 
 const fishShape = new THREE.Shape()
-					.moveTo( x, y )
-					.quadraticCurveTo( x + 5, y - 8, x + 9, y - 1 )
-					.quadraticCurveTo( x + 10, y - 1, x + 11.5, y - 4 )
-					.quadraticCurveTo( x + 11.5, y, x + 11.5, y + 4 )
-					.quadraticCurveTo( x + 10, y + 1, x + 9, y + 1 )
-					.quadraticCurveTo( x + 5, y + 8, x, y );
+    .moveTo(x, y)
+    .quadraticCurveTo(x + 5, y - 8, x + 9, y - 1)
+    .quadraticCurveTo(x + 10, y - 1, x + 11.5, y - 4)
+    .quadraticCurveTo(x + 11.5, y, x + 11.5, y + 4)
+    .quadraticCurveTo(x + 10, y + 1, x + 9, y + 1)
+    .quadraticCurveTo(x + 5, y + 8, x, y);
+
+
+
+
 
 
 let scale = 5;
 let kj = 7
 const models = [
-    //{ toString: () => "shpere", mode: "implicit", func: MCF.sphere, xmin: -4, xmax: 4, ymin: -4, ymax:4, zmin: -4, zmax:4, nseg:100},
+    //{ toString: () => "shpere", mode: "implicit", func: MCF.sphere, xmin: -4, xmax: 4, ymin: -4, ymax:4, zmin: -4, zmax:4, nseg:100, newton : 2},
     
     { toString: () => "hyperboloid", mode: "surf", surf: MathCurve.hyperboloid, umin: 0, umax: 2 * Math.PI, vmin: -2, vmax: 2, useg: 200, vseg: 100, repeat: 1 },
     { toString: () => "trefoil", mode: "curve", curve: MCF.trefoil, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6 },
@@ -65,7 +70,7 @@ const models = [
     { toString: () => "kummer(implicit)", mode: "implicit", func: MathCurve.kummer, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
     { toString: () => "Genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "round-cube (implicit)", mode: "implicit", func: MCF.rcube, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
-    { toString: () => "goursat (implicit)", mode: "implicit", func: MCF.goursat, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 150 },
+    { toString: () => "goursat (implicit)", mode: "implicit", func: MCF.goursat, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100, newton: 5 },
     { toString: () => "riemann (implicit)", mode: "implicit", func: MCF.riemann, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 150 },
     { toString: () => "gayley (implicit)", mode: "implicit", func: MCF.gayley, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 150 },
     { toString: () => "clebsch (implicit)", mode: "implicit", func: MCF.clebsch, xmin: -6, xmax: 6, ymin: -6, ymax: 6, zmin: -6, zmax: 6, nseg: 150 },
@@ -81,6 +86,8 @@ const models = [
     },
     { toString: () => "gyroide (implicit)", mode: "implicit", func: MCF.gyroide, xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
     { toString: () => "cylinders(implicit)", mode: "implicit", func: MathCurve.cylinder, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -4, zmax: 2, nseg: 100 },
+    { toString: () => "Balls (implicit)", mode: "implicit", func: Balls.potential, render: Balls.render, xmin: -Balls.r, xmax: Balls.r + 1, ymin: -Balls.r - 1, ymax: Balls.r + 1, zmin: -Balls.r - 1, zmax: Balls.r + 1, nseg: 50, newton: 4 },
+    
 
 
 
@@ -96,8 +103,8 @@ const models = [
     { toString: () => "egg_box", mode: "surf", surf: MCF.egg_box1, umin: -4, umax: 4, vmin: -4, vmax: 4, useg: 100, vseg: 100, repeat: 1 },
 
     { toString: () => "smooth", mode: "surf", surf: MathCurve.smooth, umin: 0, umax: 2 * Math.PI, vmin: 0, vmax: 2, useg: 100, vseg: 300, repeat: 1 },
-    { toString: () => "fish", mode: "curve", curve: (t) => NormalUtils.path(t, fishShape), tmin: 0, tmax: 5, radius: 0.5, tseg: 400, rseg: 50, repeat: 10, axis: 2, height : 2 },
-    { toString: () => "heart2", mode: "curveheight", curve: (t) => NormalUtils.path(t, heartShape), tmin: 0, tmax: 6, radius: 1., tseg: 400, rseg: 50, repeat: 10, height:3 },
+    { toString: () => "fish", mode: "curve", curve: (t) => NormalUtils.path(t, fishShape), tmin: 0, tmax: 5, radius: 0.5, tseg: 400, rseg: 50, repeat: 10, axis: 2, height: 2 },
+    { toString: () => "heart2", mode: "curveheight", curve: (t) => NormalUtils.path(t, heartShape), tmin: 0, tmax: 6, radius: 1., tseg: 400, rseg: 50, repeat: 10, height: 3 },
 
 
     {
@@ -330,9 +337,9 @@ function CreatePanel() {
         geom = makeGeometry(par.boxparams);
 
     if (par.mode == "implicit")
-         geom = new ImplicitGeometry(par.func, par.xmin, par.xmax, par.ymin, par.ymax, par.zmin, par.zmax, par.nseg);
+        geom = new ImplicitGeometry(par.func, par.xmin, par.xmax, par.ymin, par.ymax, par.zmin, par.zmax, par.nseg, par.newton);
 
-    
+
 
     if (me)
         scene.remove(me);
@@ -344,11 +351,12 @@ function CreatePanel() {
 
     me2 = null;
 
-    if (par.mode == "implicit")
-    {
+    if (par.mode == "implicit") {
         me = new THREE.Mesh(geom, materialFun);
-        me3 = new THREE.Mesh(geom, materialFunb);
-        scene.add(me3);
+        if (params.model.render == null) {
+            me3 = new THREE.Mesh(geom, materialFunb);
+            scene.add(me3);
+        }
         //me = new THREE.Points(geom, new THREE.PointsMaterial({ size: 0.03 }));
     }
 
@@ -373,6 +381,10 @@ function onWindowResize() {
 
 function render(time) {
     time *= 0.001; // convert to seconds;
+    if (params.model.render) {
+        params.model.render(time);
+        CreatePanel();
+    }
     controls.update();
     renderer.render(scene, camera);
     requestAnimationFrame(render);
@@ -412,5 +424,8 @@ function saveArrayBuffer(buffer, filename) {
     save(new Blob([buffer], { type: 'application/octet-stream' }), filename);
 
 }
+
+
+
 
 
