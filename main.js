@@ -44,7 +44,7 @@ const fishShape = new THREE.Shape()
 let scale = 5;
 let kj = 7
 const models = [
-    //{ toString: () => "shpere", mode: "implicit", func: MCF.sphere, xmin: -4, xmax: 4, ymin: -4, ymax:4, zmin: -4, zmax:4, nseg:100, newton : 2},
+    //{ toString: () => "shpere", mode: "implicit", func: MCF.sphere, xmin: -4, xmax: 4, ymin: -4, ymax:4, zmin: -4, zmax:4, nseg:50, newton : 10},
     
     { toString: () => "hyperboloid", mode: "surf", surf: MathCurve.hyperboloid, umin: 0, umax: 2 * Math.PI, vmin: -2, vmax: 2, useg: 200, vseg: 100, repeat: 1 },
     { toString: () => "trefoil", mode: "curve", curve: MCF.trefoil, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6 },
@@ -86,8 +86,8 @@ const models = [
     },
     { toString: () => "gyroide (implicit)", mode: "implicit", func: MCF.gyroide, xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
     { toString: () => "cylinders(implicit)", mode: "implicit", func: MathCurve.cylinder, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -4, zmax: 2, nseg: 100 },
-    { toString: () => "Balls (implicit)", mode: "implicit", func: Balls.potential, render: Balls.render, xmin: -Balls.r, xmax: Balls.r + 1, ymin: -Balls.r - 1, ymax: Balls.r + 1, zmin: -Balls.r - 1, zmax: Balls.r + 1, nseg: 50, newton: 4 },
     
+    { toString: () => "Balls (implicit)", mode: "implicit", func: Balls.potential, render: Balls.render, xmin: -Balls.r, xmax: Balls.r + 1, ymin: -Balls.r - 1, ymax: Balls.r + 1, zmin: -Balls.r - 1, zmax: Balls.r + 1, nseg: 50, newton: 4 },
 
 
 
