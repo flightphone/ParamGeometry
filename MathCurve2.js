@@ -1,4 +1,5 @@
 import { Vector2, Vector3 } from "three";
+import * as TR from './trtables';
 function sphere(u = 0, v = 0, a = 0, c = new Vector3(0, 0, 0)) {
     const norm = new Vector3(Math.sin(v) * Math.cos(u), Math.sin(v) * Math.sin(u), Math.cos(v));
     norm.multiplyScalar(a);
@@ -30,6 +31,20 @@ function bezier3(t, u, P0, P1, P2, P3) {
 
 
 class MathCurve {
+    static cassinian(x, y, z)
+    {
+        let res = 1, b = 4.3, r = 5;
+        let v = new Vector3(x, y, z);
+        TR.VERTICES.forEach((a)=>{
+            res *= v.distanceTo(new Vector3(r*(a[0]-0.5), r*(a[1]-0.5), r*(a[2] - 0.5)));
+        })
+        return res - b*b*b*b*r*r*r*r;
+    }
+    static klein (x, y, z)
+    {
+        let a = (x*x + y*y + z*z - 2*y - 1)
+        return (a + 4*y)*(a*a - 8*z*z) + 16*x*z*a;
+    }
     static cylinder(x, y, z)
     {
         function cy(x, y, z, r)

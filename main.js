@@ -42,10 +42,12 @@ const fishShape = new THREE.Shape()
 
 
 let scale = 5;
-let kj = 7
+let kj = 7;
+
 const models = [
     //{ toString: () => "shpere", mode: "implicit", func: MCF.sphere, xmin: -4, xmax: 4, ymin: -4, ymax:4, zmin: -4, zmax:4, nseg:50, newton : 10},
     
+
     { toString: () => "hyperboloid", mode: "surf", surf: MathCurve.hyperboloid, umin: 0, umax: 2 * Math.PI, vmin: -2, vmax: 2, useg: 200, vseg: 100, repeat: 1 },
     { toString: () => "trefoil", mode: "curve", curve: MCF.trefoil, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6 },
     { toString: () => "torus knot", mode: "curve", curve: MCF.solenoid, tmin: 0, tmax: 4 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6, axis: 2 },
@@ -65,20 +67,23 @@ const models = [
     { toString: () => "hypotrochoid2", mode: "curveheight", curve: MCF.hypotrochoid, tmin: 0, tmax: 3 * 2 * Math.PI, radius: 0.5, tseg: 1000, rseg: 50, repeat: 40, height: 2 },
     { toString: () => "mebius", mode: "surf", surf: MCF.mebius, umin: 0, umax: 4 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 500, vseg: 100, repeat: 4 },
 
+    { toString: () => "genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
+    { toString: () => "cassinian(implicit)", mode: "implicit", func: MathCurve.cassinian,  xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4, nseg: 100 },
+    { toString: () => "three-torus (implicit)", mode: "implicit", func: MCF.tors, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 100 },
+    { toString: () => "holed2 (implicit)", mode: "implicit", func: MCF.holed2, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
+    { toString: () => "holed3 (implicit)", mode: "implicit", func: MCF.holed3, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
+    { toString: () => "quadrifolium (implicit)", mode: "implicit", func: MCF.quadrifolium, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 100 },
 
     { toString: () => "kummer Jeener(implicit)", mode: "implicit", func: MathCurve.kummerj, xmin: -kj, xmax: kj, ymin: -kj, ymax: kj, zmin: -kj, zmax: kj, nseg: 170 },
     { toString: () => "kummer(implicit)", mode: "implicit", func: MathCurve.kummer, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
-    { toString: () => "Genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
-    { toString: () => "round-cube (implicit)", mode: "implicit", func: MCF.rcube, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
+    //{ toString: () => "round-cube (implicit)", mode: "implicit", func: MCF.rcube, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "goursat (implicit)", mode: "implicit", func: MCF.goursat, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100, newton: 5 },
     { toString: () => "riemann (implicit)", mode: "implicit", func: MCF.riemann, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 150 },
     { toString: () => "gayley (implicit)", mode: "implicit", func: MCF.gayley, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 150 },
     { toString: () => "clebsch (implicit)", mode: "implicit", func: MCF.clebsch, xmin: -6, xmax: 6, ymin: -6, ymax: 6, zmin: -6, zmax: 6, nseg: 150 },
     { toString: () => "cubic (implicit)", mode: "implicit", func: MathCurve.cubic, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 150 },
-    { toString: () => "three-torus (implicit)", mode: "implicit", func: MCF.tors, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 100 },
-    { toString: () => "holed2 (implicit)", mode: "implicit", func: MCF.holed2, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
-    { toString: () => "holed3 (implicit)", mode: "implicit", func: MCF.holed3, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
-    { toString: () => "quadrifolium (implicit)", mode: "implicit", func: MCF.quadrifolium, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 100 },
+    
+    
 
     {
         toString: () => "sch (implicit)", mode: "implicit", func: MathCurve.sch,
@@ -217,7 +222,7 @@ const params = {
     wireframe: false,
     update: CreatePanel,
     exportASCII: exportASCII,
-    version: "4.0"
+    version: "4.1"
 }
 
 /*
