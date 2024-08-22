@@ -40,7 +40,7 @@ const models = [
     { toString: () => "eight_knot (curve)", mode: "curve", curve: MCF.eight_knot, tmin: 0, tmax: 2 * Math.PI, radius: 0.6, tseg: 500, rseg: 50, repeat: 12, axis: 2 },
     { toString: () => "torus (curve)", mode: "curve", curve: MCF.circ, tmin: 0, tmax: 2 * Math.PI, radius: 1., tseg: 100, rseg: 100, repeat: 2 },
     { toString: () => "tennis (curve)", mode: "curve", curve: MCF.tennis, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 200, rseg: 40, repeat: 6 },
-    { toString: () => "sinewave", mode: "curve", curve: MathCurve.sinewave, tmin: 0, tmax: 14 * Math.PI, radius: 0.3, tseg: 1000, rseg: 40, repeat: 70 },
+    { toString: () => "sinewave (curve)", mode: "curve", curve: MathCurve.sinewave, tmin: 0, tmax: 14 * Math.PI, radius: 0.3, tseg: 1000, rseg: 40, repeat: 70 },
     { toString: () => "liss (curve)", mode: "curve", curve: MCF.liss, tmin: 0, tmax: 10 * Math.PI, radius: 0.3, tseg: 1000, rseg: 40, repeat: 50 },
     { toString: () => "liss2 (curve)", mode: "curve", curve: MCF.liss2, tmin: 0, tmax: 4 * Math.PI, radius: 0.4, tseg: 500, rseg: 40, repeat: 12 },
     { toString: () => "rose (curve)", mode: "curve", curve: MCF.rose, tmin: 0, tmax: 10 * Math.PI, radius: 0.2, tseg: 1000, rseg: 40, repeat: 50 },
@@ -398,14 +398,6 @@ function exportASCII() {
 
 }
 
-function saveScreen()
-{
-    const convas = renderer.domElement;
-    const image = convas.toDataURL();
-    link.href = image;
-    link.download = 'screen.png';
-    link.click();
-}
 
 
 
@@ -413,6 +405,16 @@ function saveScreen()
 const link = document.createElement('a');
 link.style.display = 'none';
 document.body.appendChild(link);
+
+function saveScreen()
+{
+    const canvas = renderer.domElement;
+    const image = canvas.toDataURL();
+    link.href = image;
+    link.download = 'screen.png';
+    link.click();
+}
+
 
 function save(blob, filename) {
 
