@@ -31,6 +31,11 @@ function bezier3(t, u, P0, P1, P2, P3) {
 
 
 class MathCurve {
+    static sinewave(t) {
+        let a = 5.0, b = 2.5, m = 3.5, n = 9.;
+        t = t;
+        return new Vector3(a * Math.cos(t), a * Math.sin(t), b * Math.sin(n / m * t));
+    }
     static mobius3d ( u, t ) {
         //https://github.com/mrdoob/three.js/blob/master/examples/jsm/geometries/ParametricGeometries.js
 		// volumetric mobius strip
