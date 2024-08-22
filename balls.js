@@ -20,9 +20,9 @@ class Balls {
         //time *= 2;
         charge = [];
         for (let i = 0; i < n; i++) {
-            let x = Math.sin(i + 0.98 * time * (1.03 + 0.5 * Math.cos(1.51 * i)))*0.5;
-            let y = (Math.cos(i + 1.17 * time * Math.cos(1.22 + 1.1424 * i)))*0.5; // dip into the floor //Math.abs
-            let z = Math.cos(i + 1.1 * time * 0.1 * Math.sin((0.92 + 1.43 * i)))*0.5;
+            let x = Math.sin(i + 0.62 * time * (1.03 + 0.5 * Math.cos(1.51 * i)))*0.3;
+            let y = (Math.cos(i + 1.17 * time * Math.cos(1.22 + 1.1424 * i)))*0.8; // dip into the floor //Math.abs
+            let z = Math.cos(i + 0.51 * time * 0.1 * Math.sin((0.92 + 1.43 * i)))*0.3;
             charge.push({ x: Balls.r*x, y: Balls.r*y, z: Balls.r*z, q: 0.55 });
         }
     }

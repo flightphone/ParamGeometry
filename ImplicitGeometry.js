@@ -33,11 +33,11 @@ class ImplicitGeometry extends BufferGeometry {
         const indices = [];
         const vertices = [];
         const normals = [];
-        const shifts = {
-            x: [[1, 0, 0], [1, 1, 0], [1, 0, 1], [1, 1, 1]],
-            y: [[0, 1, 0], [1, 1, 0], [0, 1, 1], [1, 1, 1]],
-            z: [[0, 0, 1], [1, 0, 1], [0, 1, 1], [1, 1, 1]],
-        }
+        const shifts = [
+            [[1, 0, 0], [1, 1, 0], [1, 0, 1], [1, 1, 1]],
+            [[0, 1, 0], [1, 1, 0], [0, 1, 1], [1, 1, 1]],
+            [[0, 0, 1], [1, 0, 1], [0, 1, 1], [1, 1, 1]],
+        ]
         let nvert = 0;
 
         const cubes = new Map();
@@ -60,7 +60,7 @@ class ImplicitGeometry extends BufferGeometry {
                         if (Math.sign(val0) * Math.sign(val) <= 0) {
                             let po = getPoint(new Vector3(x, y, zmin + (k - 1) * zh), cpoint, val0, val);
                             addPoint(po);
-                            addIndex(i, j, k, 'z');
+                            addIndex(i, j, k, 2);
                         }
                     }
                     fval[i * nseg + j] = val;
@@ -69,7 +69,7 @@ class ImplicitGeometry extends BufferGeometry {
                         if (Math.sign(val0) * Math.sign(val) <= 0) {
                             let po = getPoint(new Vector3(x, ymin + (j - 1) * yh, z), cpoint, val0, val);
                             addPoint(po);
-                            addIndex(i, j, k, 'y');
+                            addIndex(i, j, k, 1);
                         }
                     }
                     if (i > 0) {
@@ -77,7 +77,7 @@ class ImplicitGeometry extends BufferGeometry {
                         if (Math.sign(val0) * Math.sign(val) <= 0) {
                             let po = getPoint(new Vector3(xmin + (i - 1) * xh, y, z), cpoint, val0, val);
                             addPoint(po);
-                            addIndex(i, j, k, 'x');
+                            addIndex(i, j, k, 0);
                         }
                     }
 
@@ -134,13 +134,7 @@ class ImplicitGeometry extends BufferGeometry {
         }
 
         function addIndex(i, j, k, axis) {
-            let sh = []
-            if (axis == 'x')
-                sh = shifts.x;
-            if (axis == 'y')
-                sh = shifts.y;
-            if (axis == 'z')
-                sh = shifts.z;
+            let sh = shifts[axis];
             sh.forEach((s) => {
                 let i1 = i - s[0], j1 = j - s[1], k1 = k - s[2];
                 if (i1 > -1 && j1 > -1 && k1 > -1) {
@@ -152,12 +146,7 @@ class ImplicitGeometry extends BufferGeometry {
                     }
 
                     let s0 = [s[0], s[1], s[2]];
-                    if (axis == 'x')
-                        s0[0] = 0;
-                    if (axis == 'y')
-                        s0[1] = 0;
-                    if (axis == 'z')
-                        s0[2] = 0;
+                    s0[axis] = 0;
                     let v0 = getVertexNum(s0);
                     let v1 = getVertexNum(s);
                     let edg = getEdgeNum(v0, v1);
@@ -176,6 +165,7 @@ class ImplicitGeometry extends BufferGeometry {
             let a = new Vector3(a1.x, a1.y, a1.z);
             let b = new Vector3(b1.x, b1.y, b1.z);
             let m = new Vector3();
+            //binary find with  n iterations, n = newton
             for (let i = 0; i < newton; i++) {
                 m.addVectors(a, b);
                 m.multiplyScalar(0.5);

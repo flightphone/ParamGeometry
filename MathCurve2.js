@@ -31,9 +31,28 @@ function bezier3(t, u, P0, P1, P2, P3) {
 
 
 class MathCurve {
+    static mobius3d ( u, t ) {
+        //https://github.com/mrdoob/three.js/blob/master/examples/jsm/geometries/ParametricGeometries.js
+		// volumetric mobius strip
+
+		u *= Math.PI;
+		t *= 2 * Math.PI;
+
+		u = u * 2;
+		const phi = u / 2;
+		const major = 2.25, a = 0.125, b = 0.65;
+
+		let x = a * Math.cos( t ) * Math.cos( phi ) - b * Math.sin( t ) * Math.sin( phi );
+		const z = a * Math.cos( t ) * Math.sin( phi ) + b * Math.sin( t ) * Math.cos( phi );
+		const y = ( major + x ) * Math.sin( u );
+		x = ( major + x ) * Math.cos( u );
+
+		return new Vector3(x, y, z);
+
+	}
     static cassinian(x, y, z)
     {
-        let res = 1, b = 4.3, r = 5;
+        let res = 1, b = 4.15, r = 5;
         let v = new Vector3(x, y, z);
         TR.VERTICES.forEach((a)=>{
             res *= v.distanceTo(new Vector3(r*(a[0]-0.5), r*(a[1]-0.5), r*(a[2] - 0.5)));
