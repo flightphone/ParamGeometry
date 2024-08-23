@@ -27,5 +27,5 @@ class Balls {
         }
     }
 }
-
+Balls.render(214);
 export {Balls}

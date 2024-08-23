@@ -59,33 +59,29 @@ const models = [
     { toString: () => "hyperboloid (surface)", mode: "surf", surf: MathCurve.hyperboloid, umin: 0, umax: 2 * Math.PI, vmin: -2, vmax: 2, useg: 200, vseg: 100, repeat: 1 },
     { toString: () => "mebius (surface)", mode: "surf", surf: MCF.mebius, umin: 0, umax: 4 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 500, vseg: 100, repeat: 4 },
     { toString: () => "egg_box (surface)", mode: "surf", surf: MCF.egg_box1, umin: -4, umax: 4, vmin: -4, vmax: 4, useg: 100, vseg: 100, repeat: 1 },
+    
+    
+    
     { toString: () => "genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "cassinian(implicit)", mode: "implicit", func: MathCurve.cassinian,  xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4, nseg: 100 },
+    { toString: () => "round-cube (implicit)", mode: "implicit", func: MCF.rcube, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
+    { toString: () => "balls (implicit)", mode: "implicit", func: Balls.potential,  xmin: -Balls.r, xmax: Balls.r + 1, ymin: -Balls.r - 1, ymax: Balls.r + 1, zmin: -Balls.r - 1, zmax: Balls.r + 1, nseg: 100, newton: 5 },
+    { toString: () => "desmos (implicit)", mode: "implicit", func: MathCurve.desimp, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "three-torus (implicit)", mode: "implicit", func: MCF.tors, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 100 },
+    { toString: () => "algebraic (implicit)", mode: "implicit", func: MathCurve.algebraic, xmin: -1.2, xmax: 1.2, ymin: -1.2, ymax: 1.2, zmin: -1.2, zmax: 1.2, nseg: 100 },
     { toString: () => "holed2 (implicit)", mode: "implicit", func: MCF.holed2, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
     { toString: () => "holed3 (implicit)", mode: "implicit", func: MCF.holed3, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
     { toString: () => "holed4 (implicit)", mode: "implicit", func: MCF.quadrifolium, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 100 },
-    { toString: () => "balls (implicit)", mode: "implicit", func: Balls.potential, render: Balls.render, xmin: -Balls.r, xmax: Balls.r + 1, ymin: -Balls.r - 1, ymax: Balls.r + 1, zmin: -Balls.r - 1, zmax: Balls.r + 1, nseg: 50, newton: 3 },
     { toString: () => "kummer Jeener(implicit)", mode: "implicit", func: MathCurve.kummerj, xmin: -kj, xmax: kj, ymin: -kj, ymax: kj, zmin: -kj, zmax: kj, nseg: 170 },
     { toString: () => "kummer(implicit)", mode: "implicit", func: MathCurve.kummer, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
-    //{ toString: () => "round-cube (implicit)", mode: "implicit", func: MCF.rcube, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "goursat (implicit)", mode: "implicit", func: MCF.goursat, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100, newton: 5 },
     { toString: () => "riemann (implicit)", mode: "implicit", func: MCF.riemann, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 150 },
     { toString: () => "gayley (implicit)", mode: "implicit", func: MCF.gayley, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 150 },
     { toString: () => "clebsch (implicit)", mode: "implicit", func: MCF.clebsch, xmin: -6, xmax: 6, ymin: -6, ymax: 6, zmin: -6, zmax: 6, nseg: 150 },
     { toString: () => "cubic (implicit)", mode: "implicit", func: MathCurve.cubic, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 150 },
-    
-    
-
-    {
-        toString: () => "sch (implicit)", mode: "implicit", func: MathCurve.sch,
-        xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4, nseg: 100
-    },
+    { toString: () => "sch (implicit)", mode: "implicit", func: MathCurve.sch, xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4, nseg: 100},
     { toString: () => "gyroide (implicit)", mode: "implicit", func: MCF.gyroide, xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
     { toString: () => "cylinders(implicit)", mode: "implicit", func: MathCurve.cylinder, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -4, zmax: 2, nseg: 100 },
-    
-    
-
 
 
     { toString: () => "torus2", mode: "curveheight", curve: MCF.circ, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 100, rseg: 100, repeat: 8, height: 2 },
@@ -213,6 +209,7 @@ const materialWire = new THREE.MeshStandardMaterial({
 const params = {
     model: models[0],
     wireframe: false,
+    clip:false,
     update: CreatePanel,
     exportASCII: exportASCII,
     saveScreen:saveScreen,
@@ -232,14 +229,13 @@ console.log(y);
 const gui = new GUI();
 gui.add(params, "model", models, 'name').name('Model').onChange(CreatePanel);
 gui.add(params, 'wireframe').name('Wireframe').onChange(CreatePanel);
-//gui.add(params, 'update').name('Update');
+gui.add(params, 'clip').name('Clip')
 gui.add(params, 'exportASCII').name('Export');
 gui.add(params, 'saveScreen').name('Save screen');
 gui.add(params, 'version').name('Version');
-
-
-
 gui.open();
+
+let currentModel = 0;
 
 //init scene
 let renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
@@ -289,26 +285,55 @@ let exporter = new OBJExporter();
 
 
 
-
-
-
-
-
+//=========================init object======================
 let me = null;
 let me2 = null;
 let me3 = null;
 
 CreatePanel();
 
-//mouse rotate
+//for save object
+const link = document.createElement('a');
+link.style.display = 'none';
+document.body.appendChild(link);
+//=========================init object======================
+
+
+
 let controls = new OrbitControls(camera, renderer.domElement);
 controls.update();
 window.addEventListener('resize', onWindowResize);
+onWindowResize();
 requestAnimationFrame(render);
 
+function render(time) {
+    if (params.clip)
+    {
+        let md = Math.floor(time/3000) % models.length;
+        if (md!= currentModel)
+        {
+            currentModel = md;
+            params.model = models[currentModel];
+            CreatePanel();
+        }
+    }
 
+    if (params.model.render) {
+        params.model.render(time);
+        CreatePanel();
+    }
+    controls.update();
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+}
 
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
+//===============================Service Functions==================================================
 
 function CreatePanel() {
 
@@ -339,7 +364,9 @@ function CreatePanel() {
     if (par.mode == "implicit")
         geom = new ImplicitGeometry(par.func, par.xmin, par.xmax, par.ymin, par.ymax, par.zmin, par.zmax, par.nseg, par.newton);
 
-
+    geom.computeBoundingSphere();
+    let sc = 5.5/geom.boundingSphere.radius;
+    geom.scale(sc, sc, sc);
 
     if (me)
         scene.remove(me);
@@ -373,22 +400,6 @@ function CreatePanel() {
 }
 
 
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function render(time) {
-    time *= 0.001; // convert to seconds;
-    if (params.model.render) {
-        params.model.render(time);
-        CreatePanel();
-    }
-    controls.update();
-    renderer.render(scene, camera);
-    requestAnimationFrame(render);
-}
 
 
 function exportASCII() {
@@ -398,20 +409,12 @@ function exportASCII() {
 
 }
 
-
-
-
-
-const link = document.createElement('a');
-link.style.display = 'none';
-document.body.appendChild(link);
-
 function saveScreen()
 {
     const canvas = renderer.domElement;
     const image = canvas.toDataURL();
     link.href = image;
-    link.download = 'screen.png';
+    link.download = params.model.toString() + '.png';
     link.click();
 }
 
@@ -426,7 +429,7 @@ function save(blob, filename) {
 
 function saveString(text, filename) {
 
-    save(new Blob([text], { type: 'text/plain' }), filename);
+    save(new Blob([text], { type: 'text/plain' }), params.model.toString() + '.obj');
 
 }
 

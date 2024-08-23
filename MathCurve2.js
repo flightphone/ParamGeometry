@@ -1,5 +1,5 @@
 import { Vector2, Vector3 } from "three";
-import * as TR from './trtables';
+
 function sphere(u = 0, v = 0, a = 0, c = new Vector3(0, 0, 0)) {
     const norm = new Vector3(Math.sin(v) * Math.cos(u), Math.sin(v) * Math.sin(u), Math.cos(v));
     norm.multiplyScalar(a);
@@ -31,53 +31,64 @@ function bezier3(t, u, P0, P1, P2, P3) {
 
 
 class MathCurve {
+    static algebraic(x, y, z)
+    {
+        x*=x; y*=y; z*=z;
+        let a = 0.9*0.9, r = 0.01;
+        return ((x + y - a)*(x + y - a) + (z - 1)*(z - 1)) *
+                ((z + y - a)*(z + y - a) + (x - 1)*(x - 1)) *
+                ((x + z - a)*(x + z - a) + (y - 1)*(y - 1)) - r;
+
+    }
+    static desimp(x, y, z)
+    {
+        return (x*x + y*y + z*z + Math.sin(4*x) + Math.sin(4*y) + Math.sin(4*z) - 1.11);
+    }
     static sinewave(t) {
         let a = 5.0, b = 2.5, m = 3.5, n = 9.;
         t = t;
         return new Vector3(a * Math.cos(t), a * Math.sin(t), b * Math.sin(n / m * t));
     }
-    static mobius3d ( u, t ) {
+    static mobius3d(u, t) {
         //https://github.com/mrdoob/three.js/blob/master/examples/jsm/geometries/ParametricGeometries.js
-		// volumetric mobius strip
+        // volumetric mobius strip
 
-		u *= Math.PI;
-		t *= 2 * Math.PI;
+        u *= Math.PI;
+        t *= 2 * Math.PI;
 
-		u = u * 2;
-		const phi = u / 2;
-		const major = 2.25, a = 0.125, b = 0.65;
+        u = u * 2;
+        const phi = u / 2;
+        const major = 2.25, a = 0.125, b = 0.65;
 
-		let x = a * Math.cos( t ) * Math.cos( phi ) - b * Math.sin( t ) * Math.sin( phi );
-		const z = a * Math.cos( t ) * Math.sin( phi ) + b * Math.sin( t ) * Math.cos( phi );
-		const y = ( major + x ) * Math.sin( u );
-		x = ( major + x ) * Math.cos( u );
+        let x = a * Math.cos(t) * Math.cos(phi) - b * Math.sin(t) * Math.sin(phi);
+        const z = a * Math.cos(t) * Math.sin(phi) + b * Math.sin(t) * Math.cos(phi);
+        const y = (major + x) * Math.sin(u);
+        x = (major + x) * Math.cos(u);
 
-		return new Vector3(x, y, z);
+        return new Vector3(x, y, z);
 
-	}
-    static cassinian(x, y, z)
-    {
+    }
+    static cassinian(x, y, z) {
         let res = 1, b = 4.15, r = 5;
         let v = new Vector3(x, y, z);
-        TR.VERTICES.forEach((a)=>{
-            res *= v.distanceTo(new Vector3(r*(a[0]-0.5), r*(a[1]-0.5), r*(a[2] - 0.5)));
-        })
-        return res - b*b*b*b*r*r*r*r;
+        for (let i = 0; i < 2; i++)
+            for (let j = 0; j < 2; j++)
+                for (let k = 0; k < 2; k++)
+                    res *= v.distanceTo(new Vector3(r * (i - 0.5), r * (j - 0.5), r * (k - 0.5)));
+
+        return res - b * b * b * b * r * r * r * r;
     }
-    static klein (x, y, z)
-    {
-        let a = (x*x + y*y + z*z - 2*y - 1)
-        return (a + 4*y)*(a*a - 8*z*z) + 16*x*z*a;
+    static klein(x, y, z) {
+        let a = (x * x + y * y + z * z - 2 * y - 1)
+        return (a + 4 * y) * (a * a - 8 * z * z) + 16 * x * z * a;
     }
-    static cylinder(x, y, z)
-    {
-        function cy(x, y, z, r)
-        {
-            
-            return (x*x + y*y - r*r);
+    static cylinder(x, y, z) {
+        function cy(x, y, z, r) {
+
+            return (x * x + y * y - r * r);
         }
         let r1 = 0.5, r2 = 0.48, r3 = 0.7
-        let f1 =  cy(x, y, z, r1) * cy(x, z, y, r1) * cy(y, z, x, r1) - 0.05;
+        let f1 = cy(x, y, z, r1) * cy(x, z, y, r1) * cy(y, z, x, r1) - 0.05;
         //let f2 =  cy(x, y, z, r2) * cy(x, z, y, r2) * cy(y, z, x, r2);
         return f1
         //return cy(x, y, z)
@@ -88,9 +99,9 @@ class MathCurve {
         let h1 = 0.8, h2 = 1.6;
         //h = Math.max(h1, h);
         //h = Math.min(h2, h);
-        
-        
-        
+
+
+
         if (h > 1) {
             v = (h - 1) * Math.PI;
             val = sphere(u, v, 1.5, new Vector3(0., 0., -3.));
@@ -99,10 +110,10 @@ class MathCurve {
             v = h * Math.PI;
             val = sphere(u, v, 2., new Vector3(0., 0., 1.5));
         }
-        
-       
 
-       
+
+
+
         if (h >= h1 && h <= h2) {
             v = h1 * Math.PI;
             val = sphere(0., v, 2., new Vector3(0., 0., 1.5));
