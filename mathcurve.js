@@ -214,6 +214,9 @@ function cassini(x, y, z) {
 
 
 function isf(x, y, z) {
+   let t = z;
+   z = -y;
+   y = -t; 
    return (2 * y * (y * y - 3 * x * x) * (1 - z * z) + (x * x + y * y) * (x * x + y * y) - (9 * z * z - 1) * (1 - z * z));// IMPLICIT SURFACE Function
 }
 function gyroide(x, y, z) {

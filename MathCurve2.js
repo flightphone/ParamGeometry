@@ -31,6 +31,12 @@ function bezier3(t, u, P0, P1, P2, P3) {
 
 
 class MathCurve {
+    static heart(x, y, z)
+    //https://mathworld.wolfram.com/HeartSurface.html
+    {
+        let a = (x*x + 2.25*y*y + z*z - 1);
+        return a*a*a - (x*x + 0.1125*y*y)*z*z*z;
+    }
     static algebraic(x, y, z)
     {
         x*=x; y*=y; z*=z;
