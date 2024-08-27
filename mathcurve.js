@@ -1,5 +1,42 @@
 import { Vector3 } from "three";
 
+let la = 0;
+function fract(t)
+{
+    return t - Math.floor(t);
+}
+
+function glz(iTime) {
+    iTime /= 1000;
+    let t = iTime / 4.;
+    let st = Math.floor(t) % 4.;
+    if(st == 0.)
+        la = 1.;
+    if(st == 1.)
+        la = Math.cos(fract(t) * Math.PI / 2.);
+    if(st == 2.)
+        la = 0.;
+    if(st == 3.)
+        la = Math.sin(fract(t) * Math.PI / 2.); 
+    
+}
+function mixc(t)
+{
+    if (la == 0)
+        return trefoil(t);
+    else
+    if (la == 1)    
+        return eight_knot(t);
+    else
+        {
+            let a = trefoil(t), b = eight_knot(t);
+            a.multiplyScalar(1 - la);
+            b.multiplyScalar(la);
+            a.add(b);
+            return a;
+        }    
+}
+
 function hypotrochoid(t) {
     let R = 7, r = 3, d = 7;
     let x = (R - r) * Math.cos(t) + d * Math.cos((R - r) / r * t);
@@ -33,8 +70,11 @@ function circ(t) {
 }
 
 function trefoil(t) {
-    let a = 5;
-    return new Vector3(Math.sin(t) + 2. * Math.sin(2. * t), Math.cos(t) - 2. * Math.cos(2. * t), -1 * Math.sin(3. * t));
+    let a = 1.5;
+    let res = new Vector3(Math.sin(t) + 2. * Math.sin(2. * t), Math.cos(t) - 2. * Math.cos(2. * t), -1 * Math.sin(3. * t));
+    res.multiplyScalar(a);
+    return res;
+
 }
 
 function solenoid(t) {
@@ -183,6 +223,12 @@ function romanp(v, u) {
     let x = r * r * Math.cos(u) * Math.cos(v) * Math.sin(v),
         y = r * r * Math.sin(u) * Math.cos(v) * Math.sin(v),
         z = r * r * Math.cos(u) * Math.sin(u) * Math.cos(v) * Math.cos(v);
+
+        /*
+        x += 0.2*(Math.sin(5*x));
+        y += 0.1*Math.sin(4*y);
+        z += 0.3*Math.sin(3*z);    
+        */
     return new Vector3(x, y, z);
 
 }
@@ -199,7 +245,8 @@ function riemann(x, y, z) {
 }
 
 function sphere(x, y, z) {
-    return (x * x + y * y + z * z - 3.9*3.9);
+    let r = 1.1
+    return (x * x + y * y + z * z - r*r + 0.06*(Math.sin(35*x)+Math.sin(20*y)+Math.sin(25*z)));
 }
 
 function clebsch(x, y, z) {
@@ -269,4 +316,5 @@ function quadrifolium(x, y, z)
 export {hypotrochoid,shell,sine, tennis, circ, trefoil,solenoid, liss, liss2, 
     rose, klein, desmos_spiral, eight_knot, quart, egg_box, egg_box1, mebius, boys,
 coil, rcube, goursat, gayley, roman, romanp, riemann, sphere, clebsch, cassini,
-isf, gyroide, holed2, holed3, tors, piriform, quadrifolium};
+isf, gyroide, holed2, holed3, tors, piriform, quadrifolium,
+mixc, glz};

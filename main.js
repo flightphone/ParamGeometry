@@ -12,6 +12,7 @@ import * as MCF from './mathcurve.js'
 import { MathCurve } from './MathCurve2';
 import { NormalUtils } from "./NormalUtils";
 import { Balls } from './balls';
+import { SDF } from './sdf';
 
 const x = 0, y = 0;
 const fishShape = new THREE.Shape()
@@ -31,7 +32,9 @@ let scale = 5;
 let kj = 7;
 
 const models = [
-    //{ toString: () => "shpere", mode: "implicit", func: MCF.sphere, xmin: -4, xmax: 4, ymin: -4, ymax:4, zmin: -4, zmax:4, nseg:50, newton : 10},
+    
+    //{ toString: () => "cube(implicit)", mode: "implicit", func: SDF.sdVerticalCapsule, xmin: -0.3, xmax: 0.3, ymin: -0.2, ymax: 1, zmin: -0.3, zmax: 0.3, nseg: 100 },
+    
     
     { toString: () => "genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "cassinian(implicit)", mode: "implicit", func: MathCurve.cassinian,  xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4, nseg: 100 },
@@ -54,12 +57,13 @@ const models = [
     { toString: () => "sch (implicit)", mode: "implicit", func: MathCurve.sch, xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4, nseg: 100},
     { toString: () => "gyroide (implicit)", mode: "implicit", func: MCF.gyroide, xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
     { toString: () => "cylinders(implicit)", mode: "implicit", func: MathCurve.cylinder, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -4, zmax: 2, nseg: 100 },
-
+    { toString: () => "shpere (implicit)", mode: "implicit", func: MCF.sphere, xmin: -2, xmax: 2, ymin: -2, ymax:2, zmin: -2, zmax:2, nseg:100, newton : 10},
     
     
-    { toString: () => "trefoil (curve)", mode: "curve", curve: MCF.trefoil, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6 },
+    { toString: () => "trefoil (curve)", mode: "curve", curve: MCF.trefoil, tmin: 0, tmax: 2 * Math.PI, radius: 0.65, tseg: 200, rseg: 50, repeat: 10},
     { toString: () => "torus knot (curve)", mode: "curve", curve: MCF.solenoid, tmin: 0, tmax: 4 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 6, axis: 2 },
-    { toString: () => "eight_knot (curve)", mode: "curve", curve: MCF.eight_knot, tmin: 0, tmax: 2 * Math.PI, radius: 0.6, tseg: 500, rseg: 50, repeat: 12, axis: 2 },
+    { toString: () => "eight_knot (curve)", mode: "curve", curve: MCF.eight_knot, tmin: 0, tmax: 2 * Math.PI, radius: 0.5, tseg: 200, rseg: 50, repeat: 12, axis: 2 },
+    { toString: () => "mix (curve)", mode: "curve", curve: MCF.mixc, render: MCF.glz, tmin: 0, tmax: 2 * Math.PI, radius: 0.65, tseg: 200, rseg: 25, repeat: 10},
     { toString: () => "torus (curve)", mode: "curve", curve: MCF.circ, tmin: 0, tmax: 2 * Math.PI, radius: 1., tseg: 100, rseg: 100, repeat: 2 },
     { toString: () => "tennis (curve)", mode: "curve", curve: MCF.tennis, tmin: 0, tmax: 2 * Math.PI, radius: 0.4, tseg: 200, rseg: 40, repeat: 6 },
     { toString: () => "sinewave (curve)", mode: "curve", curve: MathCurve.sinewave, tmin: 0, tmax: 14 * Math.PI, radius: 0.3, tseg: 1000, rseg: 40, repeat: 70 },
@@ -231,8 +235,8 @@ console.log(y);
 */
 
 const gui = new GUI();
-gui.add(params, "model", models, 'name').name('Model').onChange(CreatePanel);
-gui.add(params, 'wireframe').name('Wireframe').onChange(CreatePanel);
+gui.add(params, "model", models, 'name').name('Model').onChange(()=>CreatePanel(true));
+gui.add(params, 'wireframe').name('Wireframe').onChange(()=>CreatePanel(true));
 gui.add(params, 'clip').name('Clip')
 gui.add(params, 'exportASCII').name('Export');
 gui.add(params, 'saveScreen').name('Save screen');
@@ -318,13 +322,13 @@ function render(time) {
         {
             currentModel = md;
             params.model = models[currentModel];
-            CreatePanel();
+            CreatePanel(true);
         }
     }
 
     if (params.model.render) {
         params.model.render(time);
-        CreatePanel();
+        CreatePanel(false);
     }
     controls.update();
     renderer.render(scene, camera);
@@ -339,7 +343,7 @@ function onWindowResize() {
 
 //===============================Service Functions==================================================
 
-function CreatePanel() {
+function CreatePanel(scale = true) {
 
     let geom = null;
     let par = params.model;
@@ -368,18 +372,19 @@ function CreatePanel() {
     if (par.mode == "implicit")
         geom = new ImplicitGeometry(par.func, par.xmin, par.xmax, par.ymin, par.ymax, par.zmin, par.zmax, par.nseg, par.newton);
 
-    geom.computeBoundingSphere();
-    let sc = 5.5/geom.boundingSphere.radius;
-    geom.scale(sc, sc, sc);
+    if (scale)
+    {
+        geom.computeBoundingSphere();
+        let sc = 5.5/geom.boundingSphere.radius;
+        geom.scale(sc, sc, sc);
+    }
 
     if (me)
         scene.remove(me);
     if (me2)
         scene.remove(me2);
-
     if (me3)
         scene.remove(me3);
-
     me2 = null;
 
     if (par.mode == "implicit") {
