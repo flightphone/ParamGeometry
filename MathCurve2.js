@@ -88,6 +88,17 @@ class MathCurve {
         let a = (x * x + y * y + z * z - 2 * y - 1)
         return (a + 4 * y) * (a * a - 8 * z * z) + 16 * x * z * a;
     }
+    static sinei(x, y, z)
+    {
+        let a = 1.0;
+        //return 4.0 * x*x*y*y*z*z + a*a*(x-y-z)*(x+y-z)*(x-y+z)*(x-y+z)*(x+y+z)
+        return x*x + y*y*y + z*z*z*z*z - 1
+    }
+
+    static chair(x, y, z)
+    {
+        //https://mathworld.wolfram.com/ChairSurface.html
+    }
     static cylinder(x, y, z) {
         function cy(x, y, z, r) {
 

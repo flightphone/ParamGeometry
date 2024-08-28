@@ -35,7 +35,7 @@ const models = [
     
     //{ toString: () => "cube(implicit)", mode: "implicit", func: SDF.sdVerticalCapsule, xmin: -0.3, xmax: 0.3, ymin: -0.2, ymax: 1, zmin: -0.3, zmax: 0.3, nseg: 100 },
     
-    
+    //{ toString: () => "sine(implicit)", mode: "implicit", func: MathCurve.sinei, xmin: -10, xmax: 10, ymin: -10, ymax: 10, zmin: -10, zmax: 10, nseg: 100 },
     { toString: () => "genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "cassinian(implicit)", mode: "implicit", func: MathCurve.cassinian,  xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4, nseg: 100 },
     { toString: () => "round-cube (implicit)", mode: "implicit", func: MCF.rcube, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
