@@ -267,8 +267,14 @@ function isf(x, y, z) {
    return (2 * y * (y * y - 3 * x * x) * (1 - z * z) + (x * x + y * y) * (x * x + y * y) - (9 * z * z - 1) * (1 - z * z));// IMPLICIT SURFACE Function
 }
 function gyroide(x, y, z) {
+    let scale = 1.5;
+    x *= scale;
+    y*=scale;
+    z*=scale;
     return Math.cos(x) * Math.sin(y) + Math.cos(y) * Math.sin(z) + Math.cos(z) * Math.sin(x);
 }
+
+
 //https://mathcurve.com/surfaces.gb/Gyroide/gyroide.shtml
 
 

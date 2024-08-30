@@ -88,16 +88,27 @@ class MathCurve {
         let a = (x * x + y * y + z * z - 2 * y - 1)
         return (a + 4 * y) * (a * a - 8 * z * z) + 16 * x * z * a;
     }
-    static sinei(x, y, z)
+    static roman(x, y, z)
     {
-        let a = 1.0;
-        //return 4.0 * x*x*y*y*z*z + a*a*(x-y-z)*(x+y-z)*(x-y+z)*(x-y+z)*(x+y+z)
-        return x*x + y*y*y + z*z*z*z*z - 1
+        let a = 1.6;
+        return  x*x*y*y + y*y*z*z + z*z*x*x - a*a*x*y*z;
     }
-
+    static miter(x, y, z)
+    {
+        return  4.*x*x*(x*x + y*y + z*z) - y*y*(2.5 - y*y - z*z);
+    }
+    static piri(x, y, z)
+    {
+        let a = 2.;
+        return  (x*x*x*x - a*x*x*x) + a*a*(y*y+z*z);
+    }
     static chair(x, y, z)
     {
         //https://mathworld.wolfram.com/ChairSurface.html
+
+        let a = 0.8, k = 2., b = 0.4; 
+        let d = x*x + y*y + z*z - a*k*k;
+        return  d*d - b*((z - k)*(z-k) - 2.*x*x)*((z+k)*(z+k) - 2.*y*y);
     }
     static cylinder(x, y, z) {
         function cy(x, y, z, r) {
