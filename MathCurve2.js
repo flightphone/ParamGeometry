@@ -34,21 +34,19 @@ class MathCurve {
     static heart(x, y, z)
     //https://mathworld.wolfram.com/HeartSurface.html
     {
-        let a = (x*x + 2.25*y*y + z*z - 1);
-        return a*a*a - (x*x + 0.1125*y*y)*z*z*z;
+        let a = (x * x + 2.25 * y * y + z * z - 1);
+        return a * a * a - (x * x + 0.1125 * y * y) * z * z * z;
     }
-    static algebraic(x, y, z)
-    {
-        x*=x; y*=y; z*=z;
-        let a = 0.9*0.9, r = 0.01;
-        return ((x + y - a)*(x + y - a) + (z - 1)*(z - 1)) *
-                ((z + y - a)*(z + y - a) + (x - 1)*(x - 1)) *
-                ((x + z - a)*(x + z - a) + (y - 1)*(y - 1)) - r;
+    static algebraic(x, y, z) {
+        x *= x; y *= y; z *= z;
+        let a = 0.9 * 0.9, r = 0.01;
+        return ((x + y - a) * (x + y - a) + (z - 1) * (z - 1)) *
+            ((z + y - a) * (z + y - a) + (x - 1) * (x - 1)) *
+            ((x + z - a) * (x + z - a) + (y - 1) * (y - 1)) - r;
 
     }
-    static desimp(x, y, z)
-    {
-        return (x*x + y*y + z*z + Math.sin(4*x) + Math.sin(4*y) + Math.sin(4*z) - 1.11);
+    static desimp(x, y, z) {
+        return (x * x + y * y + z * z + Math.sin(4 * x) + Math.sin(4 * y) + Math.sin(4 * z) - 1.11);
     }
     static sinewave(t) {
         let a = 5.0, b = 2.5, m = 3.5, n = 9.;
@@ -88,27 +86,34 @@ class MathCurve {
         let a = (x * x + y * y + z * z - 2 * y - 1)
         return (a + 4 * y) * (a * a - 8 * z * z) + 16 * x * z * a;
     }
-    static roman(x, y, z)
-    {
+    static roman(x, y, z) {
         let a = 1.6;
-        return  x*x*y*y + y*y*z*z + z*z*x*x - a*a*x*y*z;
+        return x * x * y * y + y * y * z * z + z * z * x * x - a * a * x * y * z;
     }
-    static miter(x, y, z)
-    {
-        return  4.*x*x*(x*x + y*y + z*z) - y*y*(2.5 - y*y - z*z);
+    static miter(x, y, z) {
+        return 4. * x * x * (x * x + y * y + z * z) - y * y * (2.5 - y * y - z * z);
     }
-    static piri(x, y, z)
-    {
+    static piri(x, y, z) {
         let a = 2.;
-        return  (x*x*x*x - a*x*x*x) + a*a*(y*y+z*z);
+        return (x * x * x * x - a * x * x * x) + a * a * (y * y + z * z);
     }
-    static chair(x, y, z)
+    static barth(x, y, z) {
+        //https://mathworld.wolfram.com/BarthSextic.html
+        let f = 1., w = 1.;
+        return -4. * (f * f * x * x - y * y) * (f * f * y * y - z * z) * (f * f * z * z - x * x) + (1. + 2. * f) * (x * x + y * y + z * z - w * w) * (x * x + y * y + z * z - w * w) * w * w - 0.01;
+    }
+    static eight (x, y, z)
     {
+        //https://mathworld.wolfram.com/EightSurface.html
+        let a = 1.;
+        return 4.*z*z*z*z + a*a*(x*x + y*y - 4.*z*z) ;
+    }
+    static chair(x, y, z) {
         //https://mathworld.wolfram.com/ChairSurface.html
 
-        let a = 0.8, k = 2., b = 0.4; 
-        let d = x*x + y*y + z*z - a*k*k;
-        return  d*d - b*((z - k)*(z-k) - 2.*x*x)*((z+k)*(z+k) - 2.*y*y);
+        let a = 0.8, k = 2., b = 0.4;
+        let d = x * x + y * y + z * z - a * k * k;
+        return d * d - b * ((z - k) * (z - k) - 2. * x * x) * ((z + k) * (z + k) - 2. * y * y);
     }
     static cylinder(x, y, z) {
         function cy(x, y, z, r) {

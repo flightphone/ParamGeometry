@@ -40,6 +40,8 @@ const models = [
     
     { toString: () => "genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "chair(implicit)", mode: "implicit", func: MathCurve.chair, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
+    { toString: () => "barth(implicit)", mode: "implicit", func: MathCurve.barth, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 128 },
+    { toString: () => "eight(implicit)", mode: "implicit", func: MathCurve.eight, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 100 },
     { toString: () => "cassinian(implicit)", mode: "implicit", func: MathCurve.cassinian,  xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4, nseg: 100 },
     { toString: () => "round-cube (implicit)", mode: "implicit", func: MCF.rcube, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "balls (implicit)", mode: "implicit", func: Balls.potential,  xmin: -Balls.r, xmax: Balls.r + 1, ymin: -Balls.r - 1, ymax: Balls.r + 1, zmin: -Balls.r - 1, zmax: Balls.r + 1, nseg: 100 },
