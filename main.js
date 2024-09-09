@@ -54,6 +54,7 @@ const models = [
     { toString: () => "holed2 (implicit)", mode: "implicit", func: MCF.holed2, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
     { toString: () => "holed3 (implicit)", mode: "implicit", func: MCF.holed3, xmin: -1.2, xmax: 1.2, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100 },
     { toString: () => "holed4 (implicit)", mode: "implicit", func: MCF.quadrifolium, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 100 },
+    { toString: () => "ring(implicit)", mode: "implicit", func: MathCurve.ring, xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -0.6, zmax: 0.6, nseg: 100 },
     { toString: () => "kummer Jeener(implicit)", mode: "implicit", func: MathCurve.kummerj, xmin: -kj, xmax: kj, ymin: -kj, ymax: kj, zmin: -kj, zmax: kj, nseg: 100 },
     { toString: () => "kummer(implicit)", mode: "implicit", func: MathCurve.kummer, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
     { toString: () => "goursat (implicit)", mode: "implicit", func: MCF.goursat, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100, newton: 5 },
@@ -198,20 +199,24 @@ const materialRound = new THREE.MeshStandardMaterial({ //new THREE.MeshLambertMa
     map: texture
 });
 
-console.log(new THREE.Color(0xDECA95));
-console.log(new THREE.Color(0xDD1212));
+//console.log(new THREE.Color(0xDECA95));
+//console.log(new THREE.Color(0xDD1212));
+
 
 const materialFun = new THREE.MeshStandardMaterial({ //new THREE.MeshLambertMaterial({
     roughness: 0.1,
     color: 0xDECA95,
-    side: THREE.FrontSide
+    side: THREE.FrontSide,
+    vertexColors: false
 });
 
 const materialFunb = new THREE.MeshStandardMaterial({ //new THREE.MeshLambertMaterial({
     roughness: 0.1,
     color: 0xDD1212,
-    side: THREE.BackSide
+    side: THREE.BackSide,
+    vertexColors:false
 });
+
 
 
 const materialWire = new THREE.MeshStandardMaterial({

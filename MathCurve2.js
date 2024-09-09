@@ -31,6 +31,16 @@ function bezier3(t, u, P0, P1, P2, P3) {
 
 
 class MathCurve {
+static ring(px, py, pz) {
+    let R = 2., r = 0.3, x = pz, y = new Vector2(px, py).length() - R;
+    let res = -1.;
+    if(y > 0.) {
+        res = x * x + y * y * 4. - r;
+    } else
+        res = x * x + y * y * 50. - r;
+    return res;
+}
+
     static heart(x, y, z)
     //https://mathworld.wolfram.com/HeartSurface.html
     {
