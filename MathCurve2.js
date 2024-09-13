@@ -35,7 +35,7 @@ static ring(px, py, pz) {
     let R = 2., r = 0.3, x = pz, y = new Vector2(px, py).length() - R;
     let res = -1.;
     if(y > 0.) {
-        res = x * x + y * y * 4. - r;
+        res = x * x + y * y * 8. - r;
     } else
         res = x * x + y * y * 50. - r;
     return res;

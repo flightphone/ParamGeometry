@@ -12,7 +12,7 @@ import * as MCF from './mathcurve.js'
 import { MathCurve } from './MathCurve2';
 import { NormalUtils } from "./NormalUtils";
 import { Balls } from './balls';
-import { SDF } from './sdf';
+import { SDF } from './SDF/sdf';
 
 const x = 0, y = 0;
 const fishShape = new THREE.Shape()
@@ -32,11 +32,6 @@ let scale = 5;
 let kj = 7;
 
 const models = [
-    
-    //{ toString: () => "capsule(implicit)", mode: "implicit", func: SDF.sdVerticalCapsule, xmin: -0.3, xmax: 0.3, ymin: -0.2, ymax: 1, zmin: -0.3, zmax: 0.3, nseg: 100 },
-    
-    
-    
     
     { toString: () => "genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "chair(implicit)", mode: "implicit", func: MathCurve.chair, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
@@ -97,7 +92,9 @@ const models = [
     { toString: () => "mebius (surface)", mode: "surf", surf: MCF.mebius, umin: 0, umax: 4 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 500, vseg: 100, repeat: 4 },
     { toString: () => "egg_box (surface)", mode: "surf", surf: MCF.egg_box1, umin: -4, umax: 4, vmin: -4, vmax: 4, useg: 100, vseg: 100, repeat: 1 },
     
-    
+
+    { toString: () => "Roma(SDF)", mode: "implicit", func: SDF.roma, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -3.5, zmax: 3.5, nseg: 50 },
+
     
     
 
