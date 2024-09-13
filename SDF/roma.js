@@ -36,11 +36,7 @@ function getSg(p, nseg) {
     return sdsg(p, x, y);
   }
   
-  function sdCircle(p, r) {
-    let p1 = new Vector2(p.x, p.y);
-    return length(p1) - r;
-  }
-  
+    
   function sdPolygon3Side(p, r, h, nseg) {
     let z = p.z - h / 2.;
     let d = sdPolygonSide(p, r, nseg);
