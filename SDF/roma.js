@@ -166,6 +166,7 @@ function getSg(p, nseg) {
       p1.z += 2.6;
       let t2 = level2side(p1, t2R, 1.7, t2w, 2.6);
       return min(min(min(min(t1, t2), t0), d0), d1);
+      
     }
   
     export {map}

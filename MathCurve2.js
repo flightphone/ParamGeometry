@@ -110,7 +110,7 @@ static ring(px, py, pz) {
     static barth(x, y, z) {
         //https://mathworld.wolfram.com/BarthSextic.html
         let f = 1., w = 1.;
-        return -4. * (f * f * x * x - y * y) * (f * f * y * y - z * z) * (f * f * z * z - x * x) + (1. + 2. * f) * (x * x + y * y + z * z - w * w) * (x * x + y * y + z * z - w * w) * w * w - 0.01;
+        return -4. * (f * f * x * x - y * y) * (f * f * y * y - z * z) * (f * f * z * z - x * x) + (1. + 2. * f) * (x * x + y * y + z * z - w * w) * (x * x + y * y + z * z - w * w) * w * w - 0.25;
     }
     static eight (x, y, z)
     {
@@ -197,7 +197,9 @@ static ring(px, py, pz) {
 
     }
     static sch(x, y, z) {
-        return -(Math.cos(x) + Math.cos(y) + Math.cos(z));
+        let k = 4.*Math.PI;
+        x*=k; y*=k; z*=k;
+        return (Math.cos(x) + Math.cos(y) + Math.cos(z));
     }
     static astroidal_ellipsoid(u, v) {
         //https://mathcurve.com/surfaces.gb/astroidal/astroidal.shtml

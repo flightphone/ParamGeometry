@@ -57,7 +57,7 @@ const models = [
     { toString: () => "gayley (implicit)", mode: "implicit", func: MCF.gayley, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
     { toString: () => "clebsch (implicit)", mode: "implicit", func: MCF.clebsch, xmin: -6, xmax: 6, ymin: -6, ymax: 6, zmin: -6, zmax: 6, nseg: 100 },
     { toString: () => "cubic (implicit)", mode: "implicit", func: MathCurve.cubic, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
-    { toString: () => "sch (implicit)", mode: "implicit", func: MathCurve.sch, xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4, nseg: 100},
+    { toString: () => "Schwarz (implicit)", mode: "implicit", func: MathCurve.sch, xmin: -1, xmax: 1, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100},
     { toString: () => "gyroide (implicit)", mode: "implicit", func: MCF.gyroide, xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
     { toString: () => "gyroide2 (implicit)", mode: "implicit", func: (x, y, z)=> (MCF.gyroide(x, y, z) * MCF.gyroide(x, y, z) - 0.1), xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
     
@@ -93,7 +93,7 @@ const models = [
     { toString: () => "egg_box (surface)", mode: "surf", surf: MCF.egg_box1, umin: -4, umax: 4, vmin: -4, vmax: 4, useg: 100, vseg: 100, repeat: 1 },
     
 
-    { toString: () => "Roma(SDF)", mode: "implicit", func: SDF.roma, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -3.5, zmax: 3.5, nseg: 120 },
+    { toString: () => "Roma(SDF)", mode: "implicit", func: SDF.roma, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -3.5, zmax: 3.5, nseg: 100 },
 
     
     
@@ -196,8 +196,7 @@ const materialRound = new THREE.MeshStandardMaterial({ //new THREE.MeshLambertMa
     map: texture
 });
 
-//console.log(new THREE.Color(0xDECA95));
-//console.log(new THREE.Color(0xDD1212));
+
 
 
 const materialFun = new THREE.MeshStandardMaterial({ //new THREE.MeshLambertMaterial({
@@ -233,7 +232,7 @@ const params = {
     update: CreatePanel,
     exportASCII: exportASCII,
     saveScreen:saveScreen,
-    version: "4.2"
+    version: "4.3"
 }
 
 /*
