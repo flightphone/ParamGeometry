@@ -196,8 +196,8 @@ static ring(px, py, pz) {
         return new Vector3(x, y, z);
 
     }
-    static sch(x, y, z) {
-        let k = 4.*Math.PI;
+    static sch(x, y, z, k = 4.*Math.PI) {
+        //let k = 4.*Math.PI;
         x*=k; y*=k; z*=k;
         return (Math.cos(x) + Math.cos(y) + Math.cos(z));
     }
@@ -213,6 +213,15 @@ static ring(px, py, pz) {
         //let v = new Vector3(x, y, z);
         return x * (x * x - 3 * y * y) - z * (z * z - a * a);
     }
+    static pluspole3(x, y, z,  r, scale) {
+        x *= scale;
+        y *= scale;
+        z *= scale;
+        return Math.pow(Math.max(Math.abs(x) - r, 0.0), 3.) +
+            Math.pow(Math.max(Math.abs(y) - r, 0.0), 3.) +
+            Math.pow(Math.max(Math.abs(z) - r, 0.0), 3.);
+    }
+    
 }
 
 export { MathCurve };

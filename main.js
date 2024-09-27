@@ -32,7 +32,6 @@ let scale = 5;
 let kj = 7;
 
 const models = [
-    
     { toString: () => "genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "chair(implicit)", mode: "implicit", func: MathCurve.chair, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "barth(implicit)", mode: "implicit", func: MathCurve.barth, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 128 },
@@ -59,8 +58,14 @@ const models = [
     { toString: () => "cubic (implicit)", mode: "implicit", func: MathCurve.cubic, xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3, nseg: 100 },
     { toString: () => "Schwarz (implicit)", mode: "implicit", func: MathCurve.sch, xmin: -1, xmax: 1, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100},
     { toString: () => "gyroide (implicit)", mode: "implicit", func: MCF.gyroide, xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
-    { toString: () => "gyroide2 (implicit)", mode: "implicit", func: (x, y, z)=> (MCF.gyroide(x, y, z) * MCF.gyroide(x, y, z) - 0.1), xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
     
+    
+    { toString: () => "Schwarz2 (implicit)", mode: "implicit", func: (x, y, z)=> {
+        let scale = 4.*Math.PI+0.5;
+        return MathCurve.sch(x, y, z, scale)*MathCurve.sch(x, y, z, scale) - 0.05 + MathCurve.pluspole3(x, y, z, 4. * Math.PI, scale);
+    
+    }, xmin: -1, xmax: 1, ymin: -1, ymax: 1, zmin: -1, zmax: 1, nseg: 100},
+    { toString: () => "gyroide2 (implicit)", mode: "implicit", func: (x, y, z)=> (MCF.gyroide(x, y, z) * MCF.gyroide(x, y, z) - 0.1 + MathCurve.pluspole3(x, y, z, Math.PI * 2. - 0.3, 1.5)), xmin: -2 * Math.PI, xmax: 2 * Math.PI, ymin: -2 * Math.PI, ymax: 2 * Math.PI, zmin: -2 * Math.PI, zmax: 2 * Math.PI, nseg: 100 },
     
     { toString: () => "cylinders(implicit)", mode: "implicit", func: MathCurve.cylinder, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -4, zmax: 2, nseg: 100 },
     { toString: () => "shpere (implicit)", mode: "implicit", func: MCF.sphere, xmin: -2, xmax: 2, ymin: -2, ymax:2, zmin: -2, zmax:2, nseg:100, newton : 10},
@@ -93,7 +98,7 @@ const models = [
     { toString: () => "egg_box (surface)", mode: "surf", surf: MCF.egg_box1, umin: -4, umax: 4, vmin: -4, vmax: 4, useg: 100, vseg: 100, repeat: 1 },
     
 
-    { toString: () => "Roma(SDF)", mode: "implicit", func: SDF.roma, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -3.5, zmax: 3.5, nseg: 100 },
+    { toString: () => "Roma(SDF)", mode: "implicit", func: SDF.roma, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -3.5, zmax: 3.5, nseg: 50 },
     { toString: () => "Cylinders(SDF)", mode: "implicit", func: SDF.cyls, xmin: -2.2, xmax: 2.2, ymin: -2.2, ymax: 2.2, zmin: -2.2, zmax: 2.2, nseg: 100, newton:10 },    
     
 
@@ -234,7 +239,7 @@ const params = {
     update: CreatePanel,
     exportASCII: exportASCII,
     saveScreen:saveScreen,
-    version: "4.3"
+    version: "4.4"
 }
 
 /*
