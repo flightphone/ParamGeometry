@@ -195,7 +195,8 @@ function coil(u, v) {
 function rcube(x, y, z) {
     //https://mathcurve.com/surfaces.gb/goursat/goursat.shtml
     let a = 1;
-    return (x * x * x * x + y * y * y * y + z * z * z * z - a * a * (x * x + y * y + z * z));
+    //return (x * x * x * x + y * y * y * y + z * z * z * z - a * a * (x * x + y * y + z * z));
+    return x * x * x * x + y * y * y * y + z * z * z * z - x * x - y * y - z * z + 0.4;
 }
 
 function goursat(x, y, z) {

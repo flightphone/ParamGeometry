@@ -94,6 +94,8 @@ const models = [
     
 
     { toString: () => "Roma(SDF)", mode: "implicit", func: SDF.roma, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -3.5, zmax: 3.5, nseg: 100 },
+    { toString: () => "Cylinders(SDF)", mode: "implicit", func: SDF.cyls, xmin: -2.2, xmax: 2.2, ymin: -2.2, ymax: 2.2, zmin: -2.2, zmax: 2.2, nseg: 100, newton:10 },    
+    
 
     
     

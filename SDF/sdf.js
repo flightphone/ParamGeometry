@@ -4,5 +4,9 @@ class SDF {
   static roma(x, y, z) {
     return roma.map(x, y, z);
   }
+  static cyls(x, y, z)
+  {
+    return roma.cylinder2(new Vector3(x, y, z));
+  }
 }
 export { SDF }
