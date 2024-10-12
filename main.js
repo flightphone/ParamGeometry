@@ -32,6 +32,7 @@ let scale = 5;
 let kj = 7;
 
 const models = [
+    { toString: () => "tube", mode: "surf", surf: SDF.tube, umin: 0, umax: 2*Math.PI, vmin: 0, vmax: 1, useg: 100, vseg: 30, repeat: 1 },
     { toString: () => "genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "chair(implicit)", mode: "implicit", func: MathCurve.chair, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "barth(implicit)", mode: "implicit", func: MathCurve.barth, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 128 },

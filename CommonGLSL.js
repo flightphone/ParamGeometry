@@ -19,6 +19,7 @@ function dot2(x) { return x.dot(x); }
 function cross(x, y) { let res = new Vector3(); res.crossVectors(x, y); return res; }
 function mod(x, y) { return x % y; }
 function mix(x, y, a) { return x * (1 - a) + y * a; }
+function vec3a(a, b) { let res = new Vector3(); res.addVectors(a, b); return res; }
 function vec3s(a, b) { let res = new Vector3(); res.subVectors(a, b); return res; }
 function vec3m(a, x) { let res = new Vector3(a.x, a.y, a.z); res.multiplyScalar(x); return res }
 function rotz(p, f) {
@@ -79,5 +80,5 @@ function smin_out(d1, d2, k) {
 }
 export {
   abs, sign, sin, cos, atan, sqrt, floor, vec3, vec2, clamp, length, dot, dot2, cross,
-  mod, vec3s, vec3m, rotz, max, min, pxy, mix, smin, smin_out, PI, TAU
+  mod, vec3s, vec3m, rotz, max, min, pxy, mix, smin, smin_out, PI, TAU, vec3a
 }
