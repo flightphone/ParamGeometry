@@ -19,5 +19,14 @@ class SDF {
     v0 = vec3(r*cos(u), 0., -h);
     return vec3a(v0,vec3m(vec3s(v1,v0),(1.-v)));
   }
+  static umbrella(u, v)
+  {
+    let n = 4, r = 1;
+    let x0 = Math.floor(v), x = v - x0, x1 = (x0+1) % n;
+    let v0 = vec3(r*cos(x0*TAU/n)*cos(u), r*sin(x0*TAU/n)*cos(u), r*sin(u));
+    let v1 = vec3(r*cos(x1*TAU/n)*cos(u), r*sin(x1*TAU/n)*cos(u), r*sin(u));
+    let res = vec3a(vec3m(vec3s(v1, v0), x), v0);
+    return res;
+  }
 }
 export { SDF }
