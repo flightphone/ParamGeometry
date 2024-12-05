@@ -21,7 +21,7 @@ SurfGeometry - class for generating geometry of parametric surface
 ImplicitGeometry - class for generating geometry of implicit surface. Implementation of the Marching Cubes Algorithm in 3d and binary find with n iterations
 
 
-Demo: https://flightphone.github.io/paramgeometry.html
+Demo: https://flightphone.github.io/geometry/index.html
 
 ![Cassinian (implicit)](public/img/cassinian.png)
 ![Trefoil (curve)](public/img/trefoil.png)
