@@ -17,7 +17,9 @@ class SDF {
     let h = 6., r = 1.;
     let v1 = vec3(r*cos(u), r*sin(u), 0), 
     v0 = vec3(r*cos(u), 0., -h);
-    return vec3a(v0,vec3m(vec3s(v1,v0),(1.-v)));
+    //let res = (v <= 1.)? vec3a(v0,vec3m(vec3s(v1,v0),(1.-v))): vec3(r*cos(v-1.)*cos(u), r*cos(v-1.)*sin(u), r*sin(v-1.));
+    const res = vec3a(v0,vec3m(vec3s(v1,v0),(1.-v)));
+    return res;
   }
   static umbrella(u, v)
   {

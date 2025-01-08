@@ -19,6 +19,8 @@ const fishShape = new THREE.Shape()
 let scale = 5;
 let kj = 7;
 const models = [
+    
+
     { toString: () => "genus-two(implicit)", mode: "implicit", func: MCF.isf, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "chair(implicit)", mode: "implicit", func: MathCurve.chair, xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2, nseg: 100 },
     { toString: () => "barth(implicit)", mode: "implicit", func: MathCurve.barth, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5, nseg: 128 },
@@ -78,7 +80,7 @@ const models = [
     { toString: () => "astroidal_ellipsoid (surface)", mode: "surf", surf: MathCurve.astroidal_ellipsoid, umin: 0, umax: Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 1 },
     { toString: () => "klein (surface)", mode: "surf", surf: MCF.klein, umin: 2 * Math.PI, umax: 0, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 2 },
     { toString: () => "shell (surface)", mode: "surf", surf: MCF.shell, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 8 },
-    { toString: () => "coil (surface)", mode: "surf", surf: MCF.coil, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 16 },
+    { toString: () => "coil (surface)", mode: "surf", surf: MCF.coil, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: -2 * Math.PI, useg: 1000, vseg: 100, repeat: 16 },
     { toString: () => "mebius3d (surface)", mode: "surf", surf: MathCurve.mobius3d, umin: 0, umax: 1, vmin: 0, vmax: 1, useg: 100, vseg: 100, repeat: 4 },
 
     //{ toString: () => "hypotrochoid2", mode: "curveheight", curve: MCF.hypotrochoid, tmin: 0, tmax: 3 * 2 * Math.PI, radius: 0.5, tseg: 1000, rseg: 50, repeat: 40, height: 2 },
@@ -87,7 +89,7 @@ const models = [
     { toString: () => "egg_box (surface)", mode: "surf", surf: MCF.egg_box1, umin: -4, umax: 4, vmin: -4, vmax: 4, useg: 100, vseg: 100, repeat: 1 },
 
     { toString: () => "umbrella (surface)", mode: "surf", surf: SDF.umbrella, umin: -Math.PI / 2, umax: Math.PI / 2, vmin: 0, vmax: 4., useg: 100, vseg: 100, repeat: 1 },
-    { toString: () => "tube (surface)", mode: "surf", surf: SDF.tube, umin: 0, umax: 2 * Math.PI, vmin: 0, vmax: 1, useg: 100, vseg: 10, repeat: 1 },
+    { toString: () => "tube (surface)", mode: "surf", surf: SDF.tube, umin: 0, umax: 2 * Math.PI, vmin: 0, vmax: 1., useg: 100, vseg: 10, repeat: 1 },
 
     { toString: () => "Roma(SDF)", mode: "implicit", func: SDF.roma, xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -3.5, zmax: 3.5, nseg: 50 },
     { toString: () => "Cylinders(SDF)", mode: "implicit", func: SDF.cyls, xmin: -2.2, xmax: 2.2, ymin: -2.2, ymax: 2.2, zmin: -2.2, zmax: 2.2, nseg: 100, newton: 10 },

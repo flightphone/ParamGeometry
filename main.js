@@ -271,16 +271,24 @@ input.onchange = (ev) => {
             const cutOffAngle = 20 * Math.PI / 180;
             const tryKeepNormals = false;
             const geometry = modifier.modify(geom, cutOffAngle, tryKeepNormals);
-
+            geometry.computeVertexNormals();
+            
             geometry.computeBoundingSphere();
             let sc = 3.5 / geometry.boundingSphere.radius;
             geometry.scale(sc, sc, sc);
+            
+            
             me = new THREE.Mesh(geometry, materialFun)
+            const cnt = geometry.boundingSphere.center;
+            me.translateX(-cnt.x)
+            me.translateY(-cnt.y)
+            me.translateZ(-cnt.z)
+            
             me.material.flatShading = false;
             scene.add(me)
         },
-        (xhr) => {
-            console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+        (xr) => {
+
         },
         (error) => {
             console.log(error)
