@@ -80,7 +80,7 @@ const models = [
     { toString: () => "astroidal_ellipsoid (surface)", mode: "surf", surf: MathCurve.astroidal_ellipsoid, umin: 0, umax: Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 1 },
     { toString: () => "klein (surface)", mode: "surf", surf: MCF.klein, umin: 2 * Math.PI, umax: 0, vmin: 0, vmax: 2 * Math.PI, useg: 100, vseg: 100, repeat: 2 },
     { toString: () => "shell (surface)", mode: "surf", surf: MCF.shell, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 8 },
-    { toString: () => "coil (surface)", mode: "surf", surf: MCF.coil, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: -2 * Math.PI, useg: 1000, vseg: 100, repeat: 16 },
+    { toString: () => "coil (surface)", mode: "surf", surf: MCF.coil, umin: 0, umax: 14 * Math.PI, vmin: 0, vmax: 2 * Math.PI, useg: 1000, vseg: 100, repeat: 16 },
     { toString: () => "mebius3d (surface)", mode: "surf", surf: MathCurve.mobius3d, umin: 0, umax: 1, vmin: 0, vmax: 1, useg: 100, vseg: 100, repeat: 4 },
 
     //{ toString: () => "hypotrochoid2", mode: "curveheight", curve: MCF.hypotrochoid, tmin: 0, tmax: 3 * 2 * Math.PI, radius: 0.5, tseg: 1000, rseg: 50, repeat: 40, height: 2 },

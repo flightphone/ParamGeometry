@@ -189,7 +189,7 @@ function coil(u, v) {
     let x = (a + b * Math.cos(v)) * Math.cos(u) + b * h / Math.sqrt(a * a + h * h) * Math.sin(u) * Math.sin(v),
         y = (a + b * Math.cos(v)) * Math.sin(u) + b * h / Math.sqrt(a * a + h * h) * Math.cos(u) * Math.sin(v),
         z = h * u + b * a / Math.sqrt(a * a + h * h) * Math.sin(v);
-    return new Vector3(z - 7 * Math.PI * h, x, y);
+    return new Vector3(x, y, z);
 }
 
 function rcube(x, y, z) {

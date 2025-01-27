@@ -48,7 +48,7 @@ class SurfGeometry extends BufferGeometry {
                 let val = surf(u, v);
                 let nor = NormalUtils.surf_normal(surf, u, v);
 
-                normals.push(nor.x, nor.y, nor.z);
+                normals.push(-nor.x, -nor.y, -nor.z);
                 vertices.push(val.x, val.y, val.z);
                 uvs.push(repeat * i / (useg - 1), 1. - j / (vseg - 1))
             }

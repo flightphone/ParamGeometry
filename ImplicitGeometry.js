@@ -4,8 +4,8 @@
 
 
 import { BufferGeometry, Float32BufferAttribute, Vector3 } from "three";
-import { NormalUtils } from "./NormalUtils";
-import * as TR from './trtables';
+import { NormalUtils } from "./NormalUtils.js";
+import * as TR from './trtables.js';
 
 class ImplicitGeometry extends BufferGeometry {
 

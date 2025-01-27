@@ -276,16 +276,22 @@ input.onchange = (ev) => {
             geometry.computeBoundingSphere();
             let sc = 3.5 / geometry.boundingSphere.radius;
             geometry.scale(sc, sc, sc);
+            const cnt = geometry.boundingSphere.center;
             
             
             me = new THREE.Mesh(geometry, materialFun)
-            const cnt = geometry.boundingSphere.center;
             me.translateX(-cnt.x)
             me.translateY(-cnt.y)
             me.translateZ(-cnt.z)
-            
             me.material.flatShading = false;
             scene.add(me)
+            me2 = new THREE.Mesh(geometry, materialFunb)
+            me2.translateX(-cnt.x)
+            me2.translateY(-cnt.y)
+            me2.translateZ(-cnt.z)
+            me2.material.flatShading = false;
+            scene.add(me2)
+            
         },
         (xr) => {
 

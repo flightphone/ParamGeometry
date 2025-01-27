@@ -15,6 +15,7 @@ dist
 dist-ssr
 tests
 *.local
+obj
 
 # Editor directories and files
 .vscode/*
